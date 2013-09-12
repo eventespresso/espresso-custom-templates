@@ -13,39 +13,25 @@ function espresso_default_custom_template($events){
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	//Defaults
-	global $this_event_id; //Used to hold the evnet id for Multi Event Registration
+	global $org_options, $this_event_id; //Used to hold the evnet id for Multi Event Registration
 	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
 	$temp_month = ''; //Clears the month name
+	
+	//Uncomment to view the data being passed to this file
+	//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';
 	
 	?>
 	<table class="cal-table-list">
 
 		<?php 
-		
 		foreach ($events as $event){
-			$event_id 			= $event->id;
 			$this_event_id		= $event->id;
-			$event_name 		= $event->event_name;
-			$event_desc			= $event->event_desc;
-			$event_desc 		= array_shift(explode('<!--more-->', $event_desc));
-			$event_identifier	= $event->event_identifier;
-			$active				= $event->is_active;
-			$start_date			= $event->start_date;
-			$start_time			= $event->start_time;
-			$reg_limit			= $event->reg_limit;
-			$venue_title = $event->venue_title;
-			$event_address = $event->address;
-			$event_address2 = $event->address2;
-			$event_city = $event->city;
-			$event_state = $event->state;
-			$event_zip = $event->zip;
-			$event_country = $event->country;
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
-			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event_id);
-			$live_button 		= '<a id="a_register_link-'.$event_id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
-			$open_spots 		= get_number_of_attendees_reg_limit($event_id, 'number_available_spaces');
+			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
+			$live_button 		= '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
+			$open_spots 		= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
 			
 			//This line changes the button text to display "Closed" if the attendee limit is reached.
 			if ( $open_spots < 1 ) { $live_button = 'Closed';  }
@@ -79,9 +65,9 @@ function espresso_default_custom_template($events){
 					<?php if ($featured_image == FALSE) {?>
 					<td class="td-date-holder">
 						<div class="dater">
-							<p class="cal-day-title"><?php echo event_date_display($start_date, "l"); ?></p>
-							<p class="cal-day-num"><?php echo event_date_display($start_date, "j"); ?></p>
-							<p><span><?php echo event_date_display($start_date, "M"); ?></span></p>
+							<p class="cal-day-title"><?php echo event_date_display($event->start_date, "l"); ?></p>
+							<p class="cal-day-num"><?php echo event_date_display($event->start_date, "j"); ?></p>
+							<p><span><?php echo event_date_display($event->start_date, "M"); ?></span></p>
 						</div>
 					</td>
 					<?php }else{?>
@@ -89,12 +75,17 @@ function espresso_default_custom_template($events){
 						<div class="featured-image">
 						<?php 
 						//Featured image
-						echo apply_filters('filter_hook_espresso_display_featured_image', $event_id, !empty($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : '');?>
+						echo apply_filters('filter_hook_espresso_display_featured_image', $event->id, !empty($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : '');?>
 						</div>
 					</td>
 					<?php }?>
-					<td class="td-event-info"><span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event_name) ?></a></span><p><span><?php echo event_date_display($start_date); ?></span></p>
-						<?php echo espresso_format_content($event_desc) ?></td>
+					<td class="td-event-info">
+						<span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name) ?></a></span>
+						<p><?php _e('When:', 'event_espresso'); ?> <?php echo event_date_display($event->start_date); ?><br />
+						<?php _e('Where:', 'event_espresso'); ?> <?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
+						<?php _e('Price: ', 'event_espresso'); ?> <?php echo  $org_options['currency_symbol'].$event->event_cost; ?></p>
+						<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?>
+					</td>
 					<td class="td-event-register"><?php echo $live_button ?></td>
 				</tr>
 		<?php

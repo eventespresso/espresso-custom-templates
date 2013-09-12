@@ -116,7 +116,7 @@ function espresso_custom_template_display($attributes){
 	}
 	
 	$sql	.= "FROM ". EVENTS_DETAIL_TABLE . " e ";
-	$sql	.= "JOIN " . EVENTS_START_END_TABLE . " ese ON ese.event_id = e.id ";
+	$sql	.= "LEFT JOIN " . EVENTS_START_END_TABLE . " ese ON ese.event_id = e.id ";
 	
 	//Prices SQL
 	$sql	.= "LEFT JOIN " . EVENTS_PRICES_TABLE . " p ON p.event_id=e.id ";
@@ -137,6 +137,7 @@ function espresso_custom_template_display($attributes){
 	
 	//User SQL
 	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
+	$sql 	.= " GROUP BY e.id ";
 	$sql	.= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
 	$sql	.= !empty($limit) ? " LIMIT ".$limit : "";
 	
