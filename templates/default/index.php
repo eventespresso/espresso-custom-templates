@@ -9,7 +9,7 @@ add_action('action_hook_espresso_custom_template_default','espresso_default_cust
 
 function espresso_default_custom_template($events){
 	//Load the css file
-	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CALTABLE_PLUGINPATH."/templates/default/style.css" );
+	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	//Show the featured image for each event, instead of the date, to the left of the event title.
@@ -34,7 +34,7 @@ function espresso_default_custom_template($events){
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
 			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event_id);
-			$live_button 		= '<a id="a_register_link-'.$event_id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CALTABLE_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
+			$live_button 		= '<a id="a_register_link-'.$event_id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
 			$open_spots 		= get_number_of_attendees_reg_limit($event_id, 'number_available_spaces');
 			
 			//This line changes the button text to display "Closed" if the attendee limit is reached.

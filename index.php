@@ -1,6 +1,6 @@
 <?php
 /*
-  Plugin Name: Event Espresso - Custom Template Delivery
+  Plugin Name: Event Espresso - Custom Template Display
   Plugin URI: http://www.eventespresso.com
   Description: This addon for Event Espresso loads a template file from this plugin's directory OR the WP theme directory. Templates that are loaded from the plugin directory, should use the template name as the name of the template directory, and include an index.php file that contains the template display code. Example: If your template name is "my_custom_template". By using a shortcode such as [EVENT_CUSTOM_VIEW template_name="my_custom_template"], this plugin will load the template file located at templates/my_custom_template/index.php.
   Version: 1.0
@@ -33,7 +33,7 @@ add_action('action_hook_espresso_custom_template_output', 'espresso_custom_templ
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
 function espresso_custom_template_display($attributes){
 	
-	define("ESPRESSO_CALTABLE_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
+	define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
 	
 	global $wpdb;
 	
