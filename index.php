@@ -61,9 +61,6 @@ function espresso_custom_template_display($attributes){
 			'template_name'				=> 'default',
 	);
 	
-	
-	
-	
 	// loop thru default atts
 	foreach ($default_attributes as $key => $default_attribute) {
 		// check if att exists
