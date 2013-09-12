@@ -1,7 +1,7 @@
 <?php 
-//Template: Calendar Table Display for Events
-//Description: This template creates a list of events by category, that are displayed in a table, for a maximum number of days (optional). 
-//Shortcode Example: [EVENT_CAL_TABLE_LIST max_days="30" category_identifier="concerts"]. 
+//Template: Calendar Table Display
+//Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days. 
+//Shortcode Example: [EVENT_CUSTOM_VIEW max_days="30" category_identifier="concerts"]. 
 //Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
 
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
@@ -23,6 +23,7 @@ function espresso_default_custom_template($events){
 			$event_id 			= $event->id;
 			$event_name 		= $event->event_name;
 			$event_desc			= $event->event_desc;
+			$event_desc 		= array_shift(explode('<!--more-->', $event_desc));
 			$event_identifier	= $event->event_identifier;
 			$active				= $event->is_active;
 			$start_date			= $event->start_date;
@@ -31,9 +32,8 @@ function espresso_default_custom_template($events){
 			$event_address		= !empty($event->address) ? $event->address : '';
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
-			$event_desc			= strip_tags(html_entity_decode($event_desc));
 			$externalURL 		= $event->externalURL;
-			$registration_url 	= $externalURL != '' ? $externalURL : espresso_reg_url($event_id);
+			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event_id);
 			$live_button 		= '<a id="a_register_link-'.$event_id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CALTABLE_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
 			$open_spots 		= get_number_of_attendees_reg_limit($event_id, 'number_available_spaces');
 			

@@ -36,7 +36,6 @@ function espresso_custom_template_display($attributes){
 	define("ESPRESSO_CALTABLE_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
 	
 	global $wpdb;
-	ob_start();
 	
 	//Default variables
 	$org_options = get_option('events_organization_settings');
@@ -75,9 +74,6 @@ function espresso_custom_template_display($attributes){
 	
 	// now extract shortcode attributes
 	extract($attributes);
-
-	//Locate the template file
-	$path = locate_template( $template_name.'.php' );
 	
 	//Figure out what category id to use
 	if (!empty($event_category_id)){
@@ -127,6 +123,7 @@ function espresso_custom_template_display($attributes){
 	$sql .= $show_expired == 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
 	$sql .= $show_deleted == 'false' ? " AND e.event_status != 'D' " : " AND e.event_status = 'D' ";
 	$sql .= $category_sql;
+	
 	//User sql
 	$sql .= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
 	$sql .= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
@@ -135,16 +132,20 @@ function espresso_custom_template_display($attributes){
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);
 	
+	//Locate the template file
+	$path = locate_template( $template_name.'.php' );
 	if ( empty( $path ) ) {
-		include( 'templates/'.$template_name.'/index.php' );
-	} else {
-		include( $path );
+		$path = 'templates/'.$template_name.'/index.php';
 	}
 	
-	do_action('action_hook_espresso_custom_template_'.$template_name,$events);
+	//Output the content
+	ob_start();
+	include( $path );
+	
+	//Create an action using the template name
+	do_action('action_hook_espresso_custom_template_'.$template_name, $events);
 	
 	$buffer = ob_get_contents();
 	ob_end_clean();
 	echo $buffer;
-	
 }
