@@ -1,7 +1,3 @@
-td {
-	padding:0px !important;
-	border-top: 1px solid #EDEDED !important;
-}
 .event-title a {
 	font-size: 35px;
 	text-transform: uppercase;
@@ -19,6 +15,8 @@ img.buytix_button {
 	vertical-align: top !important;
 	border-left:0px;
 	border-bottom:0px;
+	padding-top:10px !important;
+	border-top: 1px solid #EDEDED !important;
 }
 .cal-header-month-name {
 	text-align:center;
