@@ -35,7 +35,7 @@ function espresso_custom_template_display($attributes){
 	
 	define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
 	
-	global $wpdb;
+	global $wpdb, $org_options;
 	
 	//Default variables
 	$org_options = get_option('events_organization_settings');
@@ -106,25 +106,39 @@ function espresso_custom_template_display($attributes){
 		}
 			
 	//Build the query
-	$sql  = "SELECT e.*, ";
-	if ($use_category == true){ 
-		$sql  .= "c.category_name, c.category_desc, c.display_desc, ";
-	}
-	$sql  .= "ese.start_time FROM ". EVENTS_DETAIL_TABLE . " e ";
-	$sql  .= "JOIN " . EVENTS_START_END_TABLE . " ese ON ese.event_id = e.id ";
-	if ($use_category == true){
-		$sql  .= "JOIN " . EVENTS_CATEGORY_REL_TABLE . " r ON r.event_id = e.id ";
-		$sql  .= "JOIN " . EVENTS_CATEGORY_TABLE . " c ON  c.id = r.cat_id ";
-	}
-	$sql  .= "WHERE e.is_active = 'Y' ";
-	$sql .= $show_expired == 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
-	$sql .= $show_deleted == 'false' ? " AND e.event_status != 'D' " : " AND e.event_status = 'D' ";
-	$sql .= $category_sql;
+	$sql  = "SELECT e.*, ese.start_time, ese.end_time, p.event_cost ";
 	
-	//User sql
-	$sql .= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
-	$sql .= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
-	$sql .= !empty($limit) ? " LIMIT ".$limit : "";
+	//Venue Fields
+	isset($org_options['use_venue_manager']) && $org_options['use_venue_manager'] == 'Y' ? $sql .= ", v.name venue_name, v.address venue_address, v.city venue_city, v.state venue_state, v.zip venue_zip, v.country venue_country, v.meta venue_meta " : '';
+	
+	if ($use_category == true){ 
+		$sql	.= ", c.category_name, c.category_desc, c.display_desc ";
+	}
+	
+	$sql	.= "FROM ". EVENTS_DETAIL_TABLE . " e ";
+	$sql	.= "JOIN " . EVENTS_START_END_TABLE . " ese ON ese.event_id = e.id ";
+	
+	//Prices SQL
+	$sql	.= "LEFT JOIN " . EVENTS_PRICES_TABLE . " p ON p.event_id=e.id ";
+	
+	//Category SQL
+	if ($use_category == true){
+		$sql	.= "JOIN " . EVENTS_CATEGORY_REL_TABLE . " r ON r.event_id = e.id ";
+		$sql	.= "JOIN " . EVENTS_CATEGORY_TABLE . " c ON  c.id = r.cat_id ";
+	}
+	
+	//Venue SQL
+	isset($org_options['use_venue_manager']) && $org_options['use_venue_manager'] == 'Y' ? $sql .= " LEFT JOIN " . EVENTS_VENUE_REL_TABLE . " vr ON vr.event_id = e.id LEFT JOIN " . EVENTS_VENUE_TABLE . " v ON v.id = vr.venue_id " : '';
+	
+	$sql	.= "WHERE e.is_active = 'Y' ";
+	$sql	.= $show_expired == 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
+	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : " AND e.event_status = 'D' ";
+	$sql	.= $category_sql;
+	
+	//User SQL
+	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
+	$sql	.= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
+	$sql	.= !empty($limit) ? " LIMIT ".$limit : "";
 	
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);

@@ -12,13 +12,15 @@ function espresso_default_custom_template($events){
 	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
-	//Show the featured image for each event, instead of the date, to the left of the event title.
-	$featured_image = FALSE;
+	//Defaults
+	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
+	$temp_month = ''; //Clears the month name
+	
 	?>
-<table class="cal-table-list">
+	<table class="cal-table-list">
 
 		<?php 
-		$temp_month = '';
+		
 		foreach ($events as $event){
 			$event_id 			= $event->id;
 			$event_name 		= $event->event_name;
@@ -29,7 +31,13 @@ function espresso_default_custom_template($events){
 			$start_date			= $event->start_date;
 			$start_time			= $event->start_time;
 			$reg_limit			= $event->reg_limit;
-			$event_address		= !empty($event->address) ? $event->address : '';
+			$venue_title = $event->venue_title;
+			$event_address = $event->address;
+			$event_address2 = $event->address2;
+			$event_city = $event->city;
+			$event_state = $event->state;
+			$event_zip = $event->zip;
+			$event_country = $event->country;
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
