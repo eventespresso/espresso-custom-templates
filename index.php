@@ -1,8 +1,8 @@
 <?php
 /*
-  Plugin Name: Event Espresso - Calendar Table Display for Events
+  Plugin Name: Event Espresso - Custom Template Delivery
   Plugin URI: http://www.eventespresso.com
-  Description: This plugin creates a list of events by category, that are displayed in a table, for a maximum number of days. Shortcode example: [EVENT_CAL_TABLE_LIST max_days="30" category_identifier="concerts"]. Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
+  Description: This addon for Event Espresso loads a template file from this plugin's directory OR the WP theme directory. Templates that are loaded from the plugin directory, should use the template name as the name of the template directory, and include an index.php file that contains the template display code. Example: If your template name is "my_custom_template". By using a shortcode such as [EVENT_CUSTOM_VIEW template_name="my_custom_template"], this plugin will load the template file located at templates/my_custom_template/index.php.
   Version: 1.0
   Author: Event Espresso
   Author URI: http://www.eventespresso.com
@@ -24,20 +24,16 @@
 */
 
 //Create the shortcode
-function event_cal_list_table($attributes){
-	do_action('action_hook_espresso_cal_list_table_output', $attributes);
+function espresso_custom_template_output($attributes){
+	do_action('action_hook_espresso_custom_template_output', $attributes);
 }
-add_shortcode('EVENT_CAL_TABLE_LIST', 'event_cal_list_table');
+add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 
-add_action('action_hook_espresso_cal_list_table_output', 'espresso_cal_list_table_output', 10, 1 );
+add_action('action_hook_espresso_custom_template_output', 'espresso_custom_template_display', 10, 1 );
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
-function espresso_cal_list_table_output($attributes){
+function espresso_custom_template_display($attributes){
 	
 	define("ESPRESSO_CALTABLE_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
-	
-	//Load the css file
-	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CALTABLE_PLUGINPATH."style.css" );
-	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	global $wpdb;
 	ob_start();
@@ -48,6 +44,7 @@ function espresso_cal_list_table_output($attributes){
 	$currency_symbol = $org_options['currency_symbol'];
 	$cat_sql = '';
 	$use_category = false;
+
 	
 	//Create the default attributes
 	$default_attributes = array(
@@ -61,11 +58,12 @@ function espresso_cal_list_table_output($attributes){
 			'limit'						=> '0',					//Limit the number of events retrieved from the database
 			'order_by'					=> '',					//Order by fields in the database, such as start_date
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
-			'featured_image'			=> FALSE,				//Show the featured image or not
-			'button_image'				=> 'register-now.png',	//Button image needs to be in the same directory as these files
 			'user_id'					=> '',					//List events by user id
-			
+			'template_name'				=> 'default',
 	);
+	
+	
+	
 	
 	// loop thru default atts
 	foreach ($default_attributes as $key => $default_attribute) {
@@ -74,10 +72,14 @@ function espresso_cal_list_table_output($attributes){
 				$attributes[$key] = $default_attribute;
 		}
 	}
-		
+	
 	// now extract shortcode attributes
 	extract($attributes);
+
+	//Locate the template file
+	$path = locate_template( $template_name.'.php' );
 	
+	//Figure out what category id to use
 	if (!empty($event_category_id)){
 		$category_identifier = $event_category_id;
 		$use_category = true;
@@ -133,83 +135,13 @@ function espresso_cal_list_table_output($attributes){
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);
 	
-	?>
-	<table class="cal-table-list">
-		<?php 
-		$temp_month = '';
-		foreach ($events as $event){
-			$event_id 			= $event->id;
-			$event_name 		= $event->event_name;
-			$event_desc			= $event->event_desc;
-			$event_identifier	= $event->event_identifier;
-			$active				= $event->is_active;
-			$start_date			= $event->start_date;
-			$start_time			= $event->start_time;
-			$reg_limit			= $event->reg_limit;
-			$event_address		= !empty($event->address) ? $event->address : '';
-			$member_only		= !empty($event->member_only) ? $event->member_only : '';
-			$event_meta			= unserialize($event->event_meta);
-			$event_desc			= strip_tags(html_entity_decode($event_desc));
-			$externalURL 		= $event->externalURL;
-			$registration_url 	= $externalURL != '' ? $externalURL : espresso_reg_url($event_id);
-			$live_button 		= '<a id="a_register_link-'.$event_id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CALTABLE_PLUGINPATH.$button_image.'" alt="Buy Tickets"></a>';
-			$open_spots 		= get_number_of_attendees_reg_limit($event_id, 'number_available_spaces');
-			
-			//This line changes the button text to display "Closed" if the attendee limit is reached.
-			if ( $open_spots < 1 ) { $live_button = 'Closed';  }
-			
-			//Build the table headers
-			$full_month = event_date_display($event->start_date, "F");
-			if ($temp_month != $full_month){
-				?>
-				<tr class="cal-header-month">
-					<th class="cal-header-month-name" id="calendar-header-<?php echo $full_month; ?>" colspan="3"><?php echo $full_month; ?></th>
-				</tr>
-				<tr class="cal-header">
-					<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
-					<th class="th-event-info"><?php _e('Band / Artist','event_espresso'); ?></th>
-					<th><?php _e('Tickets','event_espresso'); ?></th>
-				</tr>
-				<?php
-				$temp_month = $full_month;
-			}
-			
-			//Gets the member options, if the Members add-on is installed.
-			$member_options = get_option('events_member_settings');
+	if ( empty( $path ) ) {
+		include( 'templates/'.$template_name.'/index.php' );
+	} else {
+		include( $path );
+	}
 	
-			//If enough spaces exist then show the form
-			//Check to see if the Members plugin is installed.
-			if ( function_exists('espresso_members_installed') && espresso_members_installed() == true && !is_user_logged_in() && ($member_only == 'Y' || $member_options['member_only_all'] == 'Y') ) {
-				event_espresso_user_login();
-			}else{
-				?>
-				<tr class="">
-					<?php if ($featured_image == FALSE) {?>
-					<td class="td-date-holder">
-						<div class="dater">
-							<p class="cal-day-title"><?php echo event_date_display($start_date, "l"); ?></p>
-							<p class="cal-day-num"><?php echo event_date_display($start_date, "j"); ?></p>
-							<p><span><?php echo event_date_display($start_date, "M"); ?></span></p>
-						</div>
-					</td>
-					<?php }else{?>
-					<td class="td-fet-image">
-						<div class="featured-image">
-						<?php 
-						//Featured image
-						echo apply_filters('filter_hook_espresso_display_featured_image', $event_id, !empty($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : '');?>
-						</div>
-					</td>
-					<?php }?>
-					<td class="td-event-info"><span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event_name) ?></a></span><p><span><?php echo event_date_display($start_date); ?></span></p>
-						<?php echo espresso_format_content($event_desc) ?></td>
-					<td class="td-event-register"><?php echo $live_button ?></td>
-				</tr>
-		<?php
-			}// close is_user_logged_in	
-		 } //close foreach ?>
-	</table>
-	<?php
+	do_action('action_hook_espresso_custom_template_'.$template_name,$events);
 	
 	$buffer = ob_get_contents();
 	ob_end_clean();
