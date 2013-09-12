@@ -13,6 +13,7 @@ function espresso_default_custom_template($events){
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	//Defaults
+	global $this_event_id; //Used to hold the evnet id for Multi Event Registration
 	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
 	$temp_month = ''; //Clears the month name
 	
@@ -23,6 +24,7 @@ function espresso_default_custom_template($events){
 		
 		foreach ($events as $event){
 			$event_id 			= $event->id;
+			$this_event_id		= $event->id;
 			$event_name 		= $event->event_name;
 			$event_desc			= $event->event_desc;
 			$event_desc 		= array_shift(explode('<!--more-->', $event_desc));
