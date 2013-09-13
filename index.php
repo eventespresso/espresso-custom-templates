@@ -77,6 +77,9 @@ function espresso_custom_template_display($attributes){
 		$category_identifier = $event_category_id;
 		$use_category = true;
 	}
+	if (!empty($category_identifier)){
+		$use_category = true;
+	}
 	
 	//Categories
 		//Let's check if there's one or more categories specified for the events of the event list (based on the use of "," as a separator) and store them in the $cat array.
@@ -132,7 +135,9 @@ function espresso_custom_template_display($attributes){
 	
 	$sql	.= "WHERE e.is_active = 'Y' ";
 	$sql	.= $show_expired == 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
-	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : " AND e.event_status = 'D' ";
+	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : "";
+	$sql	.= $show_secondary == 'false' ? " AND e.event_status != 'S' " : '';
+	$sql	.= $show_recurrence == 'false' ? " AND e.recurrence_id = '0' " : '';
 	$sql	.= $category_sql;
 	
 	//Max days to display
@@ -145,13 +150,19 @@ function espresso_custom_template_display($attributes){
 	$sql 	.= " GROUP BY e.id ";
 	
 	//Order events
-	$sql	.= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
+	$sql	.= !empty($order_by) ? " ORDER BY ".$order_by : " ORDER BY date(e.start_date), ese.start_time";
+	
+	//Sort order of events
+	$sql	.= !empty($sort) ? " ".$sort : " ASC";
 	
 	//Limit amount of events returned
 	$sql	.= $limit > 0 ? " LIMIT ".$limit : "";
 	
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);
+	
+	//Debug the SQL
+	//echo '<h4>$sql : ' . $sql . '  <br />' . __FILE__ . '<br />line no: ' . __LINE__ . '</h4>';
 	
 	//Locate the template file
 	$path = locate_template( $template_name.'.php' );
