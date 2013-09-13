@@ -35,7 +35,7 @@ function espresso_custom_template_display($attributes){
 	
 	define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
 	
-	global $wpdb, $org_options;
+	global $wpdb, $org_options, $events;
 	
 	//Default variables
 	$org_options = get_option('events_organization_settings');
@@ -139,7 +139,7 @@ function espresso_custom_template_display($attributes){
 	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
 	$sql 	.= " GROUP BY e.id ";
 	$sql	.= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
-	$sql	.= !empty($limit) ? " LIMIT ".$limit : "";
+	$sql	.= $limit > 0 ? " LIMIT ".$limit : "";
 	
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);
@@ -155,9 +155,10 @@ function espresso_custom_template_display($attributes){
 	include( $path );
 	
 	//Create an action using the template name
-	do_action('action_hook_espresso_custom_template_'.$template_name, $events);
+	do_action('action_hook_espresso_custom_template_'.$template_name);
 	
 	$buffer = ob_get_contents();
 	ob_end_clean();
 	echo $buffer;
+	unset($events); //Unset the $events global variable
 }

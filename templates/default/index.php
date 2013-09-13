@@ -5,15 +5,15 @@
 //Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
 
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
-add_action('action_hook_espresso_custom_template_default','espresso_default_custom_template');
+add_action('action_hook_espresso_custom_template_default','espresso_custom_template_default');
 
-function espresso_default_custom_template($events){
+function espresso_custom_template_default(){
 	//Load the css file
 	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	//Defaults
-	global $org_options, $this_event_id; //Used to hold the evnet id for Multi Event Registration
+	global $org_options, $this_event_id, $events; //Used to hold the evnet id for Multi Event Registration
 	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
 	$temp_month = ''; //Clears the month name
 	
@@ -25,6 +25,7 @@ function espresso_default_custom_template($events){
 
 		<?php 
 		foreach ($events as $event){
+			//Debug
 			$this_event_id		= $event->id;
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
@@ -81,9 +82,11 @@ function espresso_default_custom_template($events){
 					<?php }?>
 					<td class="td-event-info">
 						<span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name) ?></a></span>
-						<p><?php _e('When:', 'event_espresso'); ?> <?php echo event_date_display($event->start_date); ?><br />
-						<?php _e('Where:', 'event_espresso'); ?> <?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
-						<?php _e('Price: ', 'event_espresso'); ?> <?php echo  $org_options['currency_symbol'].$event->event_cost; ?></p>
+						<p>
+							<?php _e('When:', 'event_espresso'); ?> <?php echo event_date_display($event->start_date); ?><br />
+							<?php _e('Where:', 'event_espresso'); ?> <?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
+							<?php _e('Price: ', 'event_espresso'); ?> <?php echo  $org_options['currency_symbol'].$event->event_cost; ?>
+						</p>
 						<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?>
 					</td>
 					<td class="td-event-register"><?php echo $live_button ?></td>
