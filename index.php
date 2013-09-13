@@ -49,7 +49,7 @@ function espresso_custom_template_display($attributes){
 	$default_attributes = array(
 			'category_identifier'		=> NULL,				//The category identifier 
 			'event_category_id'			=> NULL,				//Alternate category identifier 
-			'max_days'					=> 30,					//Maximum amount of days to display events
+			'max_days'					=> 0,					//Maximum amount of days to display events
 			'show_expired'				=> 'false',				//Show expired events or not
 			'show_secondary'			=> 'false',				//Show wait list events or not
 			'show_deleted'				=> 'false',				//Show deleted events or not
@@ -135,10 +135,19 @@ function espresso_custom_template_display($attributes){
 	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : " AND e.event_status = 'D' ";
 	$sql	.= $category_sql;
 	
+	//Max days to display
+	$sql 	.= $max_days > 0 ? "AND ADDDATE('".date ( 'Y-m-d' )."', INTERVAL ".$max_days." DAY) >= e.start_date AND e.start_date >= '".date ( 'Y-m-d' )."'" : '';
+	
 	//User SQL
 	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
+	
+	//Group events by ID
 	$sql 	.= " GROUP BY e.id ";
+	
+	//Order events
 	$sql	.= !empty($order_by) ? $order_by . " ".$sort." " : " ORDER BY date(e.start_date), ese.start_time ASC ";
+	
+	//Limit amount of events returned
 	$sql	.= $limit > 0 ? " LIMIT ".$limit : "";
 	
 	//Get the results of the query	
