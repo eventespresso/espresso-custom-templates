@@ -81,7 +81,7 @@ function espresso_custom_template_default(){
 					</td>
 					<?php }?>
 					<td class="td-event-info">
-						<span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name) ?></a></span>
+						<span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name); ?></a></span>
 						<p>
 							<?php _e('When:', 'event_espresso'); ?> <?php echo event_date_display($event->start_date); ?><br />
 							<?php _e('Where:', 'event_espresso'); ?> <?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />

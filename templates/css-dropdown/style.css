@@ -1,0 +1,107 @@
+	.leftBoxHeading_Off {
+	width: 500px;
+	height: 47px;
+	background: url('images/left-box-heading-off.png') no-repeat;
+	color: #6699cc;
+	font-size: 150%;
+	padding: 0px 0px 0px 24px;
+	cursor: pointer;
+	}
+	
+	.leftBoxHeading_Off div, .leftBoxHeading_On div{
+		padding: 10px 0px 0px 0px;
+	}
+	
+	.leftBoxHeading_On {
+	width: 500px;
+	height: 47px;
+	background: url('images/left-box-heading-on.png') no-repeat;
+	color: #6699cc;
+	font-size: 150%;
+	padding: 0px 0px 0px 24px;
+	cursor: pointer;
+	}
+	
+	.leftBoxExpander {
+	width: 500px;
+	overflow: hidden;
+	height: 0px;
+	background: url('images/left-box-expander-bg.png');
+	}
+	.leftBoxInnerPic {
+	width: 486px;
+	overflow: hidden;
+	background: url('images/left-box-inner-bg.png') bottom repeat-x;
+	margin: 0px 0px 0px 1px;
+	}
+	.leftBoxInnerPic img {
+		box-shadow: none;
+	}
+	.leftBoxInnerPicImg {
+	width: 89px;
+	height:28px;
+	background: url('images/left-box-inner-img.png') bottom repeat-x;
+	overflow: hidden;
+	float: left;
+	padding: 20px 0px 0px 18px;
+	margin-top:20px;
+	}
+	
+.leftBoxInnerPicUlWrap {
+	width: 167px;
+	overflow: hidden;
+	float: left;
+	}
+	
+.leftBoxInnerPic ul {
+	width: 138px;
+	padding: 0px 0px 0px 0px;
+	margin: -20px 0px 0px 9px;
+	list-style: none;
+	}
+	
+.leftBoxInnerPic ul li {
+	color: #6699cc;
+	font-size: 110%;
+	width: 266px;
+	}
+	
+.leftBoxInnerPic ul li a {
+	color: #6699cc;
+	text-decoration: none;
+	display: block;
+	padding: 3px 0px 3px 20px;
+	}
+	
+.leftBoxInnerPic ul li a:hover {
+	color: #6699cc;
+	}
+	
+.leftBoxFooter_Off {
+	width: 500px;
+	height: 12px;
+	background: url('images/left-box-footer-off.png') no-repeat;
+	cursor: pointer;
+	margin: 0px 0px 15px 0px;
+	}
+	
+.leftBoxFooter_On {
+	width: 500px;
+	height: 12px;
+	background: url('images/left-box-footer-on.png') no-repeat;
+	cursor: pointer;
+	margin: 0px 0px 15px 0px;
+	}
+	
+.leftBoxInner {
+	width: 487px;
+	overflow: hidden;
+	margin: 0px 0px 0px 1px;
+	}
+
+.css-dropdown-event{
+	margin:5px 0 0 0 !important;
+	padding:5px 0 0 0 !important;
+	width:470px !important;
+	overflow: hidden;
+}
