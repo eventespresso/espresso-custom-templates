@@ -1,10 +1,6 @@
 <?php 
-/*
-Template Name: CSS Dropdown
-Author: Event Espresso
-Contact: support@eventespresso.com
-Website: http://eventespresso.com
-*/
+//Template Name: CSS Dropdown
+//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="css-dropdown"]
 
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
 add_action('action_hook_espresso_custom_template_css-dropdown','espresso_css_dropdown', 10, 1);

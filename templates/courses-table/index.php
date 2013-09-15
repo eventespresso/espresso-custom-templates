@@ -1,8 +1,8 @@
 <?php 
 //Template: Course Listings Table
 //Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days. 
-//Shortcode Example: [EVENT_CUSTOM_VIEW max_days="30" category_identifier="concerts"]. 
-//Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
+//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="courses-table"]
+//Requirements: CSS skills to customize styles, some renaming of the table columns
 
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
 add_action('action_hook_espresso_custom_template_courses-table','espresso_custom_template_courses_table');
