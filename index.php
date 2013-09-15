@@ -54,6 +54,7 @@ function espresso_custom_template_display($attributes){
 			'show_secondary'			=> 'false',				//Show wait list events or not
 			'show_deleted'				=> 'false',				//Show deleted events or not
 			'show_recurrence'			=> 'true',				//Show recurring events or not
+			'recurrence_only'			=> 'false',				//Show recurring events or not
 			'limit'						=> '0',					//Limit the number of events retrieved from the database
 			'order_by'					=> '',					//Order by fields in the database, such as start_date
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
@@ -138,6 +139,8 @@ function espresso_custom_template_display($attributes){
 	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : "";
 	$sql	.= $show_secondary == 'false' ? " AND e.event_status != 'S' " : '';
 	$sql	.= $show_recurrence == 'false' ? " AND e.recurrence_id = '0' " : '';
+	$sql	.= $recurrence_only == 'true' ? " AND e.recurrence_id > '0' " : '';
+	
 	$sql	.= $category_sql;
 	
 	//Max days to display
@@ -160,9 +163,6 @@ function espresso_custom_template_display($attributes){
 	
 	//Get the results of the query	
 	$events = $wpdb->get_results($sql);
-	
-	//Debug the SQL
-	//echo '<h4>$sql : ' . $sql . '  <br />' . __FILE__ . '<br />line no: ' . __LINE__ . '</h4>';
 	
 	//Locate the template file
 	$path = locate_template( $template_name.'.php' );
