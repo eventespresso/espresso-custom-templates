@@ -13,7 +13,7 @@ function espresso_custom_template_default(){
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
 	//Defaults
-	global $org_options, $this_event_id, $events; //Used to hold the evnet id for Multi Event Registration
+	global $org_options, $this_event_id, $events;
 	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
 	$temp_month = ''; //Clears the month name
 	
