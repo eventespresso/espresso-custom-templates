@@ -80,7 +80,7 @@ function espresso_custom_template_display($attributes){
 	if (!empty($category_identifier)){
 		$use_category = true;
 	}
-		
+	
 	//Categories
 		//Let's check if there's one or more categories specified for the events of the event list (based on the use of "," as a separator) and store them in the $cat array.
 		if(strstr($category_identifier,',')){
