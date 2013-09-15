@@ -1,6 +1,6 @@
 <?php 
 /*
-Shortcode Name: CSS Dropdown
+Template Name: CSS Dropdown
 Author: Event Espresso
 Contact: support@eventespresso.com
 Website: http://eventespresso.com
