@@ -134,13 +134,15 @@ function espresso_custom_template_display($attributes){
 	//Venue SQL
 	isset($org_options['use_venue_manager']) && $org_options['use_venue_manager'] == 'Y' ? $sql .= " LEFT JOIN " . EVENTS_VENUE_REL_TABLE . " vr ON vr.event_id = e.id LEFT JOIN " . EVENTS_VENUE_TABLE . " v ON v.id = vr.venue_id " : '';
 	
+	//Only get active events
 	$sql	.= "WHERE e.is_active = 'Y' ";
-	$sql	.= $show_expired == 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
-	$sql	.= $show_deleted == 'false' ? " AND e.event_status != 'D' " : "";
-	$sql	.= $show_secondary == 'false' ? " AND e.event_status != 'S' " : '';
-	$sql	.= $show_recurrence == 'false' ? " AND e.recurrence_id = '0' " : '';
-	$sql	.= $recurrence_only == 'true' ? " AND e.recurrence_id > '0' " : '';
 	
+	//Check shortcodes attributes
+	$sql	.= $show_expired 		== 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
+	$sql	.= $show_deleted 		== 'false' ? " AND e.event_status != 'D' " : "";
+	$sql	.= $show_secondary		== 'false' ? " AND e.event_status != 'S' " : '';
+	$sql	.= $show_recurrence		== 'false' ? " AND e.recurrence_id = '0' " : '';
+	$sql	.= $recurrence_only		== 'true' ? " AND e.recurrence_id > '0' " : '';
 	$sql	.= $category_sql;
 	
 	//Max days to display
@@ -177,6 +179,7 @@ function espresso_custom_template_display($attributes){
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
 	
+	//Ouput the content
 	$buffer = ob_get_contents();
 	ob_end_clean();
 	echo $buffer;
