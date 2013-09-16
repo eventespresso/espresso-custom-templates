@@ -1,107 +1,108 @@
-	.leftBoxHeading_Off {
-	width: 500px;
-	height: 47px;
-	background: url('images/left-box-heading-off.png') no-repeat;
-	color: #6699cc;
-	font-size: 150%;
-	padding: 0px 0px 0px 24px;
-	cursor: pointer;
-	}
-	
-	.leftBoxHeading_Off div, .leftBoxHeading_On div{
-		padding: 10px 0px 0px 0px;
-	}
-	
-	.leftBoxHeading_On {
-	width: 500px;
-	height: 47px;
-	background: url('images/left-box-heading-on.png') no-repeat;
-	color: #6699cc;
-	font-size: 150%;
-	padding: 0px 0px 0px 24px;
-	cursor: pointer;
-	}
-	
-	.leftBoxExpander {
-	width: 500px;
-	overflow: hidden;
-	height: 0px;
-	background: url('images/left-box-expander-bg.png');
-	}
-	.leftBoxInnerPic {
-	width: 486px;
-	overflow: hidden;
-	background: url('images/left-box-inner-bg.png') bottom repeat-x;
-	margin: 0px 0px 0px 1px;
-	}
-	.leftBoxInnerPic img {
-		box-shadow: none;
-	}
-	.leftBoxInnerPicImg {
-	width: 89px;
-	height:28px;
-	background: url('images/left-box-inner-img.png') bottom repeat-x;
-	overflow: hidden;
-	float: left;
-	padding: 20px 0px 0px 18px;
-	margin-top:20px;
-	}
-	
-.leftBoxInnerPicUlWrap {
-	width: 167px;
-	overflow: hidden;
-	float: left;
-	}
-	
-.leftBoxInnerPic ul {
-	width: 138px;
-	padding: 0px 0px 0px 0px;
-	margin: -20px 0px 0px 9px;
-	list-style: none;
-	}
-	
-.leftBoxInnerPic ul li {
-	color: #6699cc;
-	font-size: 110%;
-	width: 266px;
-	}
-	
-.leftBoxInnerPic ul li a {
-	color: #6699cc;
-	text-decoration: none;
-	display: block;
-	padding: 3px 0px 3px 20px;
-	}
-	
-.leftBoxInnerPic ul li a:hover {
-	color: #6699cc;
-	}
-	
-.leftBoxFooter_Off {
-	width: 500px;
-	height: 12px;
-	background: url('images/left-box-footer-off.png') no-repeat;
-	cursor: pointer;
-	margin: 0px 0px 15px 0px;
-	}
-	
-.leftBoxFooter_On {
-	width: 500px;
-	height: 12px;
-	background: url('images/left-box-footer-on.png') no-repeat;
-	cursor: pointer;
-	margin: 0px 0px 15px 0px;
-	}
-	
-.leftBoxInner {
-	width: 487px;
-	overflow: hidden;
-	margin: 0px 0px 0px 1px;
-	}
+ul{
+  padding-left:0;
+}
 
-.css-dropdown-event{
-	margin:5px 0 0 0 !important;
-	padding:5px 0 0 0 !important;
-	width:470px !important;
-	overflow: hidden;
+#espresso-select {
+	font-family: 'Open Sans', sans-serif;
+	margin:0;
+	padding:0;
+	display:block;
+  list-style:none;
+  /* Clear floats */
+  float:left;
+  width:100%;
+  position:relative;
+  z-index:5;
+  height:47px;
+  line-height:1.9;
+	}
+#espresso-select h3 {
+	font-size:24px;
+	font-weight:300;
+	margin:0;
+	padding:0 0 0 1em;
+  line-height: 1.9;
+}
+ul#espresso-select,
+ul#espresso-select:hover{
+	background: -webkit-linear-gradient(90deg, #996b42 0%, #996b42 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+  background: -moz-linear-gradient(90deg, #996b42 0%, #996b42 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+  background: -o-linear-gradient(90deg, #996b42 0%, #996b42 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+  background: linear-gradient(90deg, #996b42 0%, #996b42 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+}
+#espresso-select li{
+    display:block;
+    position:relative;
+    margin: 0;
+}
+#espresso-select li:first-child{
+	border-top: 1px solid #d9d9d9;
+  	border-bottom: 1px solid #d9d9d9;
+  }
+#espresso-select a {
+    display:block;
+    color:#676767;
+    text-decoration:none;
+}
+#espresso-select a:hover{
+    color:#996b42;
+    text-decoration:none;
+}
+/*--- DROPDOWN ---*/
+#espresso-select ul{
+    background:#fff; 
+    list-style:none;
+    position:absolute;
+    left:-9999px; 
+    width:100%;
+}
+#espresso-select ul li{
+	font-size:16px;
+    padding-top:0; 
+    float:none;
+    display:block;
+    border-top:none;
+    border-bottom: 1px solid #d9d9d9;
+}
+#espresso-select ul a{
+    white-space:nowrap; 
+}
+#espresso-select ul li a { 
+  padding:.5em 1em;
+}
+#espresso-select li:hover ul { 
+    left:0; 
+}
+#espresso-select li:hover a { 
+    text-decoration:none;
+}
+#espresso-select li:hover ul a{ 
+    text-decoration:none;
+}
+#espresso-select li:hover ul li a:hover{ 
+   color:#996b42;
+}
+#espresso-select ul a{
+    white-space:nowrap; 
+}
+#espresso-select li:hover ul{ 
+    left:0; 
+}
+#espresso-select li:hover a{ 
+    text-decoration:none;
+}
+#espresso-select li:hover ul li a:hover{ 
+    background:#fff;
+}
+i.icon-chevron-sign-down{
+  display:block;
+  position:absolute;
+  right:2%;
+  top:10%;
+  font-size:18px;
+  line-height:2;
+  margin:0;
+  padding:0;
+  color: #996b42;
+  text-shadow:0 1px 0 #47322d;
 }

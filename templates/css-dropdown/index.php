@@ -12,38 +12,31 @@ if (!function_exists('espresso_css_dropdown')) {
 		wp_register_style( 'espresso_css_dropdown', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."templates/css-dropdown/style.css" );
 		wp_enqueue_style( 'espresso_css_dropdown');
 		
-		//Load JS files
-		add_action('wp_footer', 'espresso_load_css_dropdown_files');
-		function espresso_load_css_dropdown_files() {	 	
-			wp_register_script('yahoo-dom-event', (ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . "templates/css-dropdown/scripts/yahoo-dom-event.js"), false, EVENT_ESPRESSO_VERSION); 
-			wp_enqueue_script('yahoo-dom-event');
-					
-			wp_register_script('animation-min', (ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . "templates/css-dropdown/scripts/animation-min.js"), false, EVENT_ESPRESSO_VERSION); 
-			wp_enqueue_script('animation-min');
-					
-			wp_register_script('main-javascript', (ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . "templates/css-dropdown/scripts/main-javascript.js"), false, EVENT_ESPRESSO_VERSION); 
-			wp_enqueue_script('main-javascript');
+		wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Open+Sans:400,700');
+		wp_enqueue_style( 'googleFonts');
+
+        wp_register_style('fontAwesome', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."templates/css-dropdown/font-awesome/font-awesome.css" );
+		wp_enqueue_style( 'fontAwesome');	
+?>
+
+<ul id="espresso-select">
+	<li>
+		<h3><a href="#">
+			<?php _e('Upcoming Events', 'event_espresso'); ?>
+			</a></h3>
+		<i class="icon-chevron-sign-down"></i>
+		<ul>
+			<?php 
+		foreach ($events as $event){ 
+			$externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);?>
+			<li><a class="a_event_title" id="a_event_title-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>"><?php echo stripslashes_deep($event->event_name)?><br />
+				<?php echo event_date_display($event->start_date, 'M j, Y'); ?></a> </li>
+			<?php 
 		}
-		
 		?>
-
-<div id="lhsHeader6" class="leftBoxHeading_Off" onClick="lhsAction('6',true,'T6_Effective_Behaviour_Change');"><div><?php _e('View Events', 'event_espresso'); ?></div></div>
-        <div id="lhsExpander6" class="leftBoxExpander">
-          <div id="lhsInner6" class="leftBoxInnerPic"> <img src="<?php echo ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH; ?>templates/css-dropdown/images/left-box-inner-img.png" alt="Left image" height="18" width="486" />
-                <ul class="css-dropdown-ul">
-				<?php //Debug
-					//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';?>
-				<?php foreach ($events as $event){
-						$externalURL 		= $event->externalURL;
-						$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);	
-				?>
-                	<li class="css-dropdown-event"><a title="<?php echo stripslashes_deep($event->event_name); ?>" class="a_event_title" id="a_event_title-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>"><?php echo stripslashes_deep($event->event_name)?> - <?php echo event_date_display($event->start_date, 'M j, Y'); ?></a></li>
-				<?php }?>
-                </ul>
-          </div>
-        </div>
-        <div id="lhsFooter6" class="leftBoxFooter_Off" onClick="lhsAction('6',true,'false');"></div>
-
+		</ul>
+	</li>
+</ul>
 <?php
 	}
 }
