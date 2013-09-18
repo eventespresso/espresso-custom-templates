@@ -25,7 +25,7 @@ if (!function_exists('espresso_recurring_dropdown')) {
 		/* group recurring events */
 		$events_type_index = -1;
 		$events_of_same_type = array();
-		$last_recurrence_id = NULL;
+		$recurrence_ids_array = array();
 		
 	?>
 
@@ -53,11 +53,14 @@ if (!function_exists('espresso_recurring_dropdown')) {
 			$registration_url 		= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 			
 			/* group recurring events */
-			$is_new_event_type = $last_recurrence_id == 0 || $last_recurrence_id != $recurrence_id;
+			$is_new_event_type = $recurrence_id == 0 || !isset($recurrence_ids_array[$recurrence_id]);
+			
 			if ($is_new_event_type){
 				$events_type_index++;
 				$events_of_same_type[$events_type_index] = array();
 			}
+			if (!isset($recurrence_ids_array[$recurrence_id]))
+					$recurrence_ids_array[$recurrence_id] = $events_type_index;
 			
 			$event_data = array(
 				'event_id'			=> $event->id,
@@ -74,7 +77,11 @@ if (!function_exists('espresso_recurring_dropdown')) {
 				'overflow_event_id'	=> $event->overflow_event_id
 			);
 			
-			array_push($events_of_same_type[$events_type_index], $event_data);
+			if ($recurrence_id == 0) {
+				array_push($events_of_same_type[$events_type_index], $event_data);
+			} else {
+				array_push($events_of_same_type[$recurrence_ids_array[$recurrence_id]], $event_data);
+			}
 
 			$last_recurrence_id = $recurrence_id;
 			
@@ -87,7 +94,7 @@ if (!function_exists('espresso_recurring_dropdown')) {
 				<td id="event_title-<?php echo $first_event_instance['event_id']?>" class="event_title"><?php echo stripslashes_deep($first_event_instance['event_name'])?></td>
 				<td id="venue_title-<?php echo $first_event_instance['venue_title']?>" class="venue_title"><?php echo stripslashes_deep($first_event_instance['venue_title'])?></td>
 				<td id="start_time-<?php echo $first_event_instance['start_time']?>" class="start_time"><?php echo stripslashes_deep($first_event_instance['start_time'])?></td>
-				<td id="price-<?php echo $first_event_instance['price']?>" class="price"><?php echo $currency_symbol.stripslashes_deep($first_event_instance['price'])?></td>
+				<td id="price-<?php echo $first_event_instance['price']?>" class="price"><?php echo $org_options['currency_symbol'].stripslashes_deep($first_event_instance['price'])?></td>
 				<?php 
 				//Group the recurring events
 				
