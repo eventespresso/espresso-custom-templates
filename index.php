@@ -149,7 +149,7 @@ function espresso_custom_template_display($attributes){
 	$sql 	.= $max_days > 0 ? "AND ADDDATE('".date ( 'Y-m-d' )."', INTERVAL ".$max_days." DAY) >= e.start_date AND e.start_date >= '".date ( 'Y-m-d' )."'" : '';
 	
 	//User SQL
-	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND wp_user = '" . $user_id . "' ": '';
+	$sql	.= (isset($user_id) && !empty($user_id)) ? " AND e.wp_user = '" . $user_id . "' ": '';
 	
 	//Group events by ID
 	$sql 	.= " GROUP BY e.id ";
