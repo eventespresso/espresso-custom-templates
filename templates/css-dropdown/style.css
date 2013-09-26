@@ -6,14 +6,13 @@ ul{
 	font-family: 'Open Sans', sans-serif;
 	margin:0;
 	padding:0;
-	display:block;
   list-style:none;
   /* Clear floats */
   float:left;
   width:100%;
   position:relative;
   z-index:5;
-  height:47px;
+  height:auto; /* change this to 47px if you do NOT want the content pushed down when menu activ */
   line-height:1.9;
 	}
 #espresso-select h3 {
@@ -52,8 +51,6 @@ ul#espresso-select:hover{
 #espresso-select ul{
     background:#fff; 
     list-style:none;
-    position:absolute;
-    left:-9999px; 
     width:100%;
 }
 #espresso-select ul li{
@@ -70,8 +67,11 @@ ul#espresso-select:hover{
 #espresso-select ul li a { 
   padding:.5em 1em;
 }
-#espresso-select li:hover ul { 
-    left:0; 
+.dd_js li ul {
+		display:none;	
+}
+.dd_js li:hover ul { 
+    display:block; 
 }
 #espresso-select li:hover a { 
     text-decoration:none;
@@ -85,23 +85,20 @@ ul#espresso-select:hover{
 #espresso-select ul a{
     white-space:nowrap; 
 }
-#espresso-select li:hover ul{ 
-    left:0; 
-}
 #espresso-select li:hover a{ 
     text-decoration:none;
 }
 #espresso-select li:hover ul li a:hover{ 
-    background:#fff;
+    background:#f7f7f7;
 }
 i.icon-chevron-sign-down{
   display:block;
   position:absolute;
   right:2%;
-  top:10%;
+  top:0;
   font-size:18px;
   line-height:2;
-  margin:0;
+  margin-top:5px;
   padding:0;
   color: #996b42;
   text-shadow:0 1px 0 #47322d;
