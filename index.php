@@ -174,7 +174,7 @@ function espresso_custom_template_display($attributes){
 	
 	//Output the content
 	ob_start();
-	include( $path );
+	require_once( $path );
 	
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
