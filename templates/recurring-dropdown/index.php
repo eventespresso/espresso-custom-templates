@@ -47,7 +47,7 @@ if (!function_exists('espresso_recurring_dropdown')) {
 			$open_spots 			= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
 			
 			$recurrence_id			= $event->recurrence_id;
-			
+			$allow_overflow			= $event->allow_overflow;
 			$overflow_event_id		= $event->overflow_event_id;
 			$externalURL 			= $event->externalURL;
 			$registration_url 		= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
@@ -74,7 +74,8 @@ if (!function_exists('espresso_recurring_dropdown')) {
 				'reg_limit'			=> $event->reg_limit,
 				'registration_url'	=> $registration_url,
 				'recurrence_id'		=> $recurrence_id,
-				'overflow_event_id'	=> $event->overflow_event_id
+				'overflow_event_id'	=> $event->overflow_event_id,
+				'allow_overflow'	=> $event->allow_overflow
 			);
 			
 			if ($recurrence_id == 0) {
@@ -122,7 +123,10 @@ if (!function_exists('espresso_recurring_dropdown')) {
 								}
 								
 								if ($num_attendees >= $e['reg_limit']){
-									echo ' '.__('Sold Out', 'event_espresso').'</span> <a href="'.get_option('siteurl').'/?page_id='.$e['event_page_id'].'&e_reg=register&event_id='.$e['overflow_event_id'].'&name_of_event='.stripslashes_deep($e['event_name']).'">'.__('(Join Waiting List)').'</a>';
+									echo ' '.__('Sold Out', 'event_espresso').'</span>';
+									if ($e['allow_overflow'] == 'Y'){
+										echo '[ <a href="'.espresso_reg_url($e['overflow_event_id']).'">'.__('Join Waiting List').'</a> ]';	
+									}
 								}else{
 									echo '</a>';
 								}
@@ -136,9 +140,13 @@ if (!function_exists('espresso_recurring_dropdown')) {
 				}else{
 					$num_attendees = apply_filters('filter_hook_espresso_get_num_attendees', $first_event_instance['event_id']);
 					if ($num_attendees >= $events_group[0]['reg_limit']){ ?>
-						<td><p><span class="error"><?php _e('Sold Out', 'event_espresso'); ?></span> <a href="<?php echo espresso_reg_url($first_event_instance['overflow_event_id']);?>">
-						<?php _e('Join Waiting List', 'event_espresso'); ?>
-						</a></p>
+						<td><p><span class="error"><?php _e('Sold Out', 'event_espresso'); ?></span> 
+						<?php 
+						if ($first_event_instance['allow_overflow'] == 'Y'){
+							echo '[ <a href="'.espresso_reg_url($first_event_instance['overflow_event_id']).'">'.__('Join Waiting List').'</a> ]';	
+						}
+						?>
+						</p>
 						</td>
 		<?php 		
 					}else{ ?>
