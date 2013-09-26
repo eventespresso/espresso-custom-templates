@@ -167,9 +167,13 @@ function espresso_custom_template_display($attributes){
 	$events = $wpdb->get_results($sql);
 	
 	//Locate the template file
-	$path = locate_template( $template_name.'.php' );
+	$path = locate_template( $template_name.'/index.php' );
 	if ( empty( $path ) ) {
-		$path = 'templates/'.$template_name.'/index.php';
+		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php')) {
+			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php';
+		}else{
+			$path = 'templates/'.$template_name.'/index.php';
+		}
 	}
 	
 	//Output the content
