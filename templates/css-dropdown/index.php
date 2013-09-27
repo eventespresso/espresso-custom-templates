@@ -1,37 +1,21 @@
-<script type="application/javascript">
-
-jQuery(document).ready(function(){
-								
-	//if javascript enabled disable CSS hover effect.
-	jQuery('.dd_js').removeClass('dd_js');
-	jQuery('#espresso-select li ul').css('display', 'none');
-	
-	
-	jQuery('#espresso-select').click(function() {									  
-		jQuery('#espresso-select ul').toggle();
-	});
-
-
-});
-
-
-</script>
-
-
-
 <?php 
 //Template Name: CSS Dropdown
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="css-dropdown"]
 
-//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
 add_action('action_hook_espresso_custom_template_css-dropdown','espresso_css_dropdown', 10, 1);
 if (!function_exists('espresso_css_dropdown')) {
 	function espresso_css_dropdown(){	
-		global $events;
-	
+		global $events, $ee_attributes;
+		
+		// now extract shortcode attributes
+		extract($ee_attributes);
+		
+		//Custom shortcode parameter: css_file
+		//Example shortcode usage: [EVENT_CUSTOM_VIEW template_name="css-dropdown" css_file="brown"]
+		$css_file = isset($css_file) && !empty($css_file) ? $css_file : 'style';
 		
 		//Register styles
-		wp_register_style( 'espresso_css_dropdown', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."templates/css-dropdown/style.css" );
+		wp_register_style( 'espresso_css_dropdown', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'templates/css-dropdown/'.$css_file.'.css' );
 		wp_enqueue_style( 'espresso_css_dropdown');
 		
 		wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Open+Sans:400,700');
@@ -61,6 +45,24 @@ if (!function_exists('espresso_css_dropdown')) {
         </li>
     </ul>
 </div>
+<script type="application/javascript">
+
+jQuery(document).ready(function(){
+								
+	//if javascript enabled disable CSS hover effect.
+	jQuery('.dd_js').removeClass('dd_js');
+	jQuery('#espresso-select li ul').css('display', 'none');
+	
+	
+	jQuery('#espresso-select').click(function() {									  
+		jQuery('#espresso-select ul').toggle();
+	});
+
+
+});
+
+
+</script>
 <?php
 	}
 }
