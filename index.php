@@ -33,7 +33,9 @@ add_action('action_hook_espresso_custom_template_output', 'espresso_custom_templ
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
 function espresso_custom_template_display($attributes){
 	
-	define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
+	if( !defined('ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH')){
+		define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
+	}
 	
 	global $wpdb, $org_options, $events;
 	
