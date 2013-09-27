@@ -26,7 +26,7 @@ function espresso_custom_template_grid(){
 	
 	?>
 	<div class="">
-
+    
 		<?php 
 		foreach ($events as $event){
 			//Debug
@@ -45,13 +45,19 @@ function espresso_custom_template_grid(){
 			
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
-	
+
+			$image = $event_meta['event_thumbnail_url'];
+			if($image == '') { $image = ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg'; }
+			
+			//uncomment this and comment out the above line if you want to use the Organisation logo
+			//if($image == '') { $image = $org_options['default_logo_url']; }
+
 				?>
 
      
             <div class="ee_grid_box">
                 <a id="a_register_link-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>" class="darken">
-                    <img src="<?php echo $event_meta['event_thumbnail_url']; ?>" alt="" />
+                    <img src="<?php echo $image; ?>" alt="" />
                     <span>      
                         <h2>
                         <span>
