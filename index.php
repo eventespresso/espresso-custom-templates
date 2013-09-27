@@ -72,6 +72,10 @@ function espresso_custom_template_display($attributes){
 		}
 	}
 	
+	//Create a global to hold the shortcode attributes/parameters
+	global $ee_attributes;
+	$ee_attributes = $attributes;
+	
 	// now extract shortcode attributes
 	extract($attributes);
 	
@@ -189,5 +193,5 @@ function espresso_custom_template_display($attributes){
 	$buffer = ob_get_contents();
 	ob_end_clean();
 	echo $buffer;
-	unset($events); //Unset the $events global variable
+	unset($events, $ee_attributes); //Unset the $events global variable
 }
