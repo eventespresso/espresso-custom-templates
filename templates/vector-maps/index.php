@@ -1,19 +1,14 @@
 <?php 
 //Template: Vector Map
-
 //Description: This template displays a jQuery vector (SVG) map of a specific country, and highlights those regions when there is an event in the list that has a venue there. Clicking the state/region will display the events details.
-
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="vector-maps" max_days="30" category_identifier="concerts"].
-
 //Requirements: CSS skills to customize styles. Events must have venues, those venues must have the State filled out in long form or international shortform (e.g New York or NY, Ontario or ON)
-
-//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
 
 //This template only has a couple of maps and is geared to use North America. You can find more maps and details on how to create them here https://github.com/manifestinteractive/jqvmap 
 
-// CANADIAN? Rename the default index.php file and then rename the index_canada.php file to index.php, then you will get a map of the  Great White North.
+// CANADIAN? Use this shortcode parameter: country="canada"
 
-// BRITISH? Find me an SVG map of the UK's counties! Everything I can find is geared to just England...
+// BRITISH? Find us an SVG map of the UK's counties! Everything we can find is geared to just England...
 
 add_action('action_hook_espresso_custom_template_vector-maps','espresso_custom_template_vector_maps');
 
