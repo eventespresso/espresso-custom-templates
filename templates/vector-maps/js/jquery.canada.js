@@ -48,7 +48,7 @@ jQuery('#hidden_states input').each(function(){
 			jQuery('.ee_maps_region').remove();
 			jQuery("#events_in").show().append('<span class="ee_maps_region">'+region+'</span>');
 			
-			console.log(st_count);
+			//console.log(st_count);
 			jQuery(".usa-table-list tr").hide();
 			jQuery("."+code).show();
 			if(st_count == 0) { jQuery('.noevents').css("display","block"); }
