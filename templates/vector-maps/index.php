@@ -8,7 +8,9 @@
 
 // CANADIAN? Use this shortcode parameter: country="canada"
 
-// BRITISH? Find us an SVG map of the UK's counties! Everything we can find is geared to just England...
+// BRITISH? Use this shortcode parameter: country="uk" 
+//There is a basic Regional map based on http://en.wikipedia.org/wiki/Regions_of_England. This requires specific teminology used in the State field of the venue. E.g East of England (East England wont work!) or London as a state. Fiddly but we don't have specifc codes for regions. 
+//Find us an SVG map of the UK's counties! Everything we can find is geared to just England...
 
 add_action('action_hook_espresso_custom_template_vector-maps','espresso_custom_template_vector_maps');
 
@@ -128,7 +130,7 @@ function espresso_custom_template_vector_maps(){
  
  function espresso_state_convert($state, $country) {
 	
-	$state = strtolower($state);
+	$state = strtolower($state);	
 
 	if(strlen($state) >= 2) {
 		if ($country == 'usa'){
@@ -265,7 +267,35 @@ function espresso_custom_template_vector_maps(){
 					break;
 			}
 		}
+				if ($country == 'uk'){
+			switch ($state){
+				case 'london' 		:	$state = "LN";
+					break;
+				case 'north west' 	:	$state = "NW";
+					break;
+				case 'scotland' 	:	$state = "SC";
+					break;
+				case 'northern ireland' 	:	$state = "NI";
+					break;
+				case 'wales' 		:	$state = "WA";
+					break;
+				case 'west midlands':	$state = "WM";
+					break;
+				case 'yorkshire and humber' 	:	$state = "YO";
+					break;
+				case 'east midlands' 	:	$state = "EM";
+					break;
+				case 'east of england' 	:	$state = "ee";
+					break;
+				case 'south east' 	:	$state = "SE";
+					break;
+				case 'south west' 	:	$state = "SW";
+					break;
+				case 'north east' 	:	$state = "NE";
+					break;
+			}
+		}
+
 		return strtolower($state);
 	}
 }
-
