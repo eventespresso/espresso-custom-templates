@@ -239,59 +239,79 @@ function espresso_custom_template_vector_maps(){
 		}
 		if ($country == 'canada'){
 			switch ($state){
-				case 'alberta' 		:	$state = "AB";
+				case 'alberta' 					:	$state = "AB";
 					break;
-				case 'british columbia':$state = "BC";
+				case 'british columbia'			:	$state = "BC";
 					break;
-				case 'manitoba'		:	$state = "MB";
+				case 'manitoba'					:	$state = "MB";
 					break;
-				case 'new brunswick':	$state = "NB";
+				case 'new brunswick'			:	$state = "NB";
 					break;
-				case 'newfoundland and labrador':$state = "NL";
+				case 'newfoundland and labrador':	$state = "NL";
 					break;
-				case 'northwest territories'	:	$state = "NT";
+				case 'northwest territories'	:	$state = "NWT";
 					break;
-				case 'nova scotia'	:	$state = "NS";
+				case 'nova scotia'				:	$state = "NS";
 					break;
-				case 'nunavut'	:	$state = "NU";
+				case 'nunavut'					:	$state = "NU";
 					break;
-				case 'ontario'	:	$state = "ON";
+				case 'ontario'					:	$state = "ON";
 					break;
-				case 'prince edward island':$state = "PE";
+				case 'prince edward island'		:	$state = "PE";
 					break;
-				case 'quebec'		:	$state = "QC";
+				case 'quebec'					:	$state = "QC";
 					break;
-				case 'saskatchewan'	:	$state = "SK";
+				case 'saskatchewan'				:	$state = "SK";
 					break;
-				case 'yukon'		:	$state = "YK";
+				case 'yukon'					:	$state = "YK";
 					break;
 			}
 		}
 				if ($country == 'uk'){
 			switch ($state){
-				case 'london' 		:	$state = "LN";
+				case 'london' 					:	$state = "LN";
 					break;
-				case 'north west' 	:	$state = "NW";
+				case 'north west' 				:	$state = "NW";
 					break;
-				case 'scotland' 	:	$state = "SC";
+				case 'scotland' 				:	$state = "SC";
 					break;
-				case 'northern ireland' 	:	$state = "NI";
+				case 'northern ireland' 		:	$state = "NI";
 					break;
-				case 'wales' 		:	$state = "WA";
+				case 'wales' 					:	$state = "WA";
 					break;
-				case 'west midlands':	$state = "WM";
+				case 'west midlands'			:	$state = "WM";
 					break;
 				case 'yorkshire and humber' 	:	$state = "YO";
 					break;
-				case 'east midlands' 	:	$state = "EM";
+				case 'east midlands' 			:	$state = "EM";
 					break;
-				case 'east of england' 	:	$state = "ee";
+				case 'east of england' 			:	$state = "EE";
 					break;
-				case 'south east' 	:	$state = "SE";
+				case 'south east' 				:	$state = "SE";
 					break;
-				case 'south west' 	:	$state = "SW";
+				case 'south west' 				:	$state = "SW";
+					break;	
+				case 'north east' 				:	$state = "NE";
 					break;
-				case 'north east' 	:	$state = "NE";
+			}
+		}
+				if ($country == 'australia'){
+			switch ($state){
+				case 'australian capital territory'	:	$state = "ACT";
+					break;
+				case 'new south wales' 				:	$state = "NSW";
+					break;
+				case 'northern territory' 			:	$state = "NT";
+					break;
+				case 'queensland' 					:	$state = "QLD";
+					break;
+				case 'south australia' 				:	$state = "SA";
+					break;
+				case 'tasmania'						:	$state = "TAS";
+					break;
+				case 'victoria' 					:	$state = "VIC";
+					break;
+				case 'western australia' 			:	$state = "WA";
 					break;
 			}
 		}
