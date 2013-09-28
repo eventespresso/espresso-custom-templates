@@ -9,7 +9,10 @@ add_action('action_hook_espresso_custom_template_courses-table','espresso_custom
 
 function espresso_custom_template_courses_table(){
 	
-	global $this_event_id, $events;
+	global $this_event_id, $events, $ee_attributes;
+	
+	//Extract shortcode attributes, if any.
+	extract($ee_attributes);
 	
 	//Check for Multi Event Registration
 	$multi_reg = false;
