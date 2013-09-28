@@ -50,6 +50,8 @@ jQuery('#hidden_states input').each(function(){
 
 			jQuery(".usa-table-list tr").hide();
 			jQuery("."+code).show();
+			if(st_count == 0) { jQuery('.noevents').css("display","block"); }
+
 			//console.log(element);
 			//console.log(code);
 			//console.log(region);
@@ -73,5 +75,4 @@ jQuery('#hidden_states input').each(function(){
 			
 });
 
- 
  

@@ -62,7 +62,7 @@ function espresso_custom_template_vector_maps(){
 
 <div id="eemap"></div>
 <h2 id="events_in">
-	<?php _e('Events in', 'event_espresso'); ?>
+	<?php _e('Events in ', 'event_espresso'); ?>
 </h2>
 <table class="usa-table-list">
 	<tr class="cal-header hide">
@@ -130,7 +130,7 @@ function espresso_custom_template_vector_maps(){
 	
 	$state = strtolower($state);
 
-	if(strlen($state) > 2) {
+	if(strlen($state) >= 2) {
 		if ($country == 'usa'){
 			switch ($state){
 				case 'alabama'		:	$state = "AL";
@@ -237,7 +237,7 @@ function espresso_custom_template_vector_maps(){
 		}
 		if ($country == 'canada'){
 			switch ($state){
-				case 'alberta'		:	$state = "AB";
+				case 'alberta' 		:	$state = "AB";
 					break;
 				case 'british columbia':$state = "BC";
 					break;
@@ -247,7 +247,13 @@ function espresso_custom_template_vector_maps(){
 					break;
 				case 'newfoundland and labrador':$state = "NL";
 					break;
+				case 'northwest territories'	:	$state = "NT";
+					break;
 				case 'nova scotia'	:	$state = "NS";
+					break;
+				case 'nunavut'	:	$state = "NU";
+					break;
+				case 'ontario'	:	$state = "ON";
 					break;
 				case 'prince edward island':$state = "PE";
 					break;
