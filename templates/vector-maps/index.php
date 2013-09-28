@@ -18,29 +18,31 @@
 add_action('action_hook_espresso_custom_template_vector-maps','espresso_custom_template_vector_maps');
 
 function espresso_custom_template_vector_maps(){
+	global $org_options, $this_event_id, $events, $wpdb, $ee_attributes;
+	
+	//Extract shortcode attributes, if any.
+	extract($ee_attributes);
+	
+	//Custom shortcode parameter: country
+	//Defaults to usa. IF you need to load a different country, use the following shortcode.
+	//Example shortcode usage: [EVENT_CUSTOM_VIEW template_name="vector-maps" country="canada"]
+	$country = isset($country) && !empty($country) ? $country : 'usa';
 	
 	//Load the css and script files
 	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/vector-maps/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 
-	wp_register_script( 'jquery_usa', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/vector-maps/js/jquery.usa.js', array('jquery'), '0.1', TRUE );
-	wp_enqueue_script( 'jquery_usa' );
+	wp_register_script( 'jquery_'.$country, ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/vector-maps/js/jquery.'.$country.'.js', array('jquery'), '0.1', TRUE );
+	wp_enqueue_script( 'jquery_'.$country );
 	
 	wp_register_script( 'jquery_vmap', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/vector-maps/js/jquery.vmap.min.js', array('jquery'), '0.1', TRUE );
 	wp_enqueue_script( 'jquery_vmap' );
 	
-	wp_register_script( 'jquery_vmap_location', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/vector-maps/js/maps/jquery.vmap.usa.js', array('jquery'), '0.1', TRUE );
+	wp_register_script( 'jquery_vmap_location', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/vector-maps/js/maps/jquery.vmap.'.$country.'.js', array('jquery'), '0.1', TRUE );
 	wp_enqueue_script( 'jquery_vmap_location' );
 	
 	wp_register_style( 'jquery_vmap_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/vector-maps/js/jqvmap.css" );
 	wp_enqueue_style( 'jquery_vmap_css');
-
-
-	
-	global $org_options, $this_event_id, $events, $wpdb;
-	
-	//Show the featured image for each event, instead of the date, to the left of the event title.
-	$featured_image = FALSE;
 	
 	//Clears the month name
 	$temp_month = '';
@@ -55,7 +57,7 @@ function espresso_custom_template_vector_maps(){
 	echo "<div id='hidden_states'>";
 	if (!empty($ven_event_count)){
 		foreach ($ven_event_count as $key => $value) {
-			$state = espresso_state_convert($key);
+			$state = espresso_state_convert($key, $country);
 			echo "<input name='" . $state . "' type='hidden' value='" . $value . "' />";
 		}
 	}
@@ -64,17 +66,18 @@ function espresso_custom_template_vector_maps(){
 ?>
 
 <div id="eemap"></div>
-<h2 id="events_in"><?php _e('Events in', 'event_espresso'); ?> </h2>
+<h2 id="events_in">
+	<?php _e('Events in', 'event_espresso'); ?>
+</h2>
 <table class="usa-table-list">
 	<tr class="cal-header hide">
-		<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
+		<th><?php _e('Date','event_espresso'); ?></th>
 		<th class="th-event-info"><?php _e('Event','event_espresso'); ?></th>
 		<th><?php _e('Tickets','event_espresso'); ?></th>
 	</tr>
 	<?php 
 
 		foreach ($events as $event){
-			//Debug
 			$this_event_id		= $event->id;
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
@@ -97,20 +100,12 @@ function espresso_custom_template_vector_maps(){
 				event_espresso_user_login();
 			}else{
 				?>
-	<tr class="usa_map_row <?php echo state_convert($event->venue_state); ?>">
-		<?php if ($featured_image == FALSE) {?>
+	<tr class="usa_map_row <?php echo espresso_state_convert($event->venue_state, $country); ?>">
 		<td class="td-date-holder"><div class="dater">
 				<p class="cal-day-title"><?php echo event_date_display($event->start_date, "l"); ?></p>
 				<p class="cal-day-num"><?php echo event_date_display($event->start_date, "j"); ?></p>
 				<p><span><?php echo event_date_display($event->start_date, "M"); ?></span></p>
 			</div></td>
-		<?php }else{?>
-		<td class="td-fet-image"><div class="featured-image">
-				<?php 
-					//Featured image
-					echo apply_filters('filter_hook_espresso_display_featured_image', $event->id, !empty($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : '');?>
-			</div></td>
-		<?php }?>
 		<td class="td-event-info"><span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name); ?></a></span>
 			<p>
 				<?php _e('When:', 'event_espresso'); ?>
@@ -126,7 +121,7 @@ function espresso_custom_template_vector_maps(){
 			}// close is_user_logged_in	
 		 } //close foreach ?>
 	<tr class="usa_map_row noevents">
-		<td> <?php _e('No Events Available.', 'event_espresso'); ?> </td>
+		<td><?php _e('No Events Available.', 'event_espresso'); ?></td>
 	</tr>
 </table>
 <?php
@@ -136,117 +131,140 @@ function espresso_custom_template_vector_maps(){
  } //end of main function!!
  
  
- function espresso_state_convert($x) {
+ function espresso_state_convert($state, $country) {
 	
-	$state = strtolower($x);
+	$state = strtolower($state);
 
 	if(strlen($state) > 2) {
-		switch ($state){
-			case 'alabama'		:	$y = "AL";
-				break;
-			case 'alaska'		: 	$y = "AK";
-				break;
-			case 'arizona'		:	$y = "AZ";
-				break;
-			case 'arkansas'		:	$y = "AR";
-				break;
-			case 'california' 	:	$y = "CA";
-				break;
-			case 'colorado'		:	$y = "CO";
-				break;
-			case 'connecticut'	:	$y = "CT";
-				break;
-			case 'delaware'		:	$y = "DE";
-				break;
-			case 'florida'		:	$y = "FL";
-				break;
-			case 'georgia'		:	$y = "GA";
-				break;
-			case 'hawaii'		:	$y = "HI";
-				break;
-			case 'idaho'		:	$y = "ID";
-				break;
-			case 'illinois'		:	$y = "IL";
-				break;
-			case 'indiana'		:	$y = "IN";
-				break;
-			case 'iowa'			:	$y = "IA";
-				break;
-			case 'kansas'		:	$y = "KS";
-				break;
-			case 'kentucky'		:	$y = "KY";
-				break;
-			case 'louisiana'	:	$y = "LA";
-				break;
-			case 'maine'		:	$y = "ME";
-				break;
-			case 'maryland'		:	$y = "MD";
-				break;
-			case 'massachusetts':	$y = "MA";
-				break;
-			case 'michigan'		:	$y = "MI";
-				break;
-			case 'minnesota'	:	$y = "MN";
-				break;
-			case 'mississippi'	:	$y = "MS";
-				break;
-			case 'missouri'		:	$y = "MO";
-				break;
-			case 'montana'		:	$y = "MT";
-				break;
-			case 'nebraska'		:	$y = "NE";
-				break;
-			case 'nevada'		:	$y = "NV";
-				break;
-			case 'new hampshire':	$y = "NH";
-				break;
-			case 'new jersey'	:	$y = "NJ";
-				break;
-			case 'new mexico'	:	$y = "NM";
-				break;
-			case 'new york'		:	$y = "NY";
-				break;
-			case 'north carolina':	$y = "NC";
-				break;
-			case 'north dakota'	:	$y = "ND";
-				break;
-			case 'ohio'			:	$y = "OH";
-				break;
-			case 'oklahoma'		:	$y = "OK";
-				break;
-			case 'oregon'		:	$y = "OR";
-				break;
-			case 'pennsylvania'	:	$y = "PA";
-				break;
-			case 'rhode island'	:	$y = "RI";
-				break;
-			case 'south carolina':	$y = "SC";
-				break;
-			case 'south dakota'	:	$y = "SD";
-				break;
-			case 'tennessee'	:	$y = "TN";
-				break;
-			case 'texas'		:	$y = "TX";
-				break;
-			case 'utah'			:	$y = "UT";
-				break;
-			case 'vermont'		:	$y = "VT";
-				break;
-			case 'virginia'		:	$y = "VA";
-				break;
-			case 'washington'	:	$y = "WA";
-				break;
-			case 'west virginia':	$y = "WV";
-				break;
-			case 'wisconsin'	:	$y = "WI";
-				break;
-			case 'wyoming'		:	$y = "WY";
-				break;
+		if ($country == 'usa'){
+			switch ($state){
+				case 'alabama'		:	$state = "AL";
+					break;
+				case 'alaska'		: 	$state = "AK";
+					break;
+				case 'arizona'		:	$state = "AZ";
+					break;
+				case 'arkansas'		:	$state = "AR";
+					break;
+				case 'california' 	:	$state = "CA";
+					break;
+				case 'colorado'		:	$state = "CO";
+					break;
+				case 'connecticut'	:	$state = "CT";
+					break;
+				case 'delaware'		:	$state = "DE";
+					break;
+				case 'florida'		:	$state = "FL";
+					break;
+				case 'georgia'		:	$state = "GA";
+					break;
+				case 'hawaii'		:	$state = "HI";
+					break;
+				case 'idaho'		:	$state = "ID";
+					break;
+				case 'illinois'		:	$state = "IL";
+					break;
+				case 'indiana'		:	$state = "IN";
+					break;
+				case 'iowa'			:	$state = "IA";
+					break;
+				case 'kansas'		:	$state = "KS";
+					break;
+				case 'kentucky'		:	$state = "KY";
+					break;
+				case 'louisiana'	:	$state = "LA";
+					break;
+				case 'maine'		:	$state = "ME";
+					break;
+				case 'maryland'		:	$state = "MD";
+					break;
+				case 'massachusetts':	$state = "MA";
+					break;
+				case 'michigan'		:	$state = "MI";
+					break;
+				case 'minnesota'	:	$state = "MN";
+					break;
+				case 'mississippi'	:	$state = "MS";
+					break;
+				case 'missouri'		:	$state = "MO";
+					break;
+				case 'montana'		:	$state = "MT";
+					break;
+				case 'nebraska'		:	$state = "NE";
+					break;
+				case 'nevada'		:	$state = "NV";
+					break;
+				case 'new hampshire':	$state = "NH";
+					break;
+				case 'new jersey'	:	$state = "NJ";
+					break;
+				case 'new mexico'	:	$state = "NM";
+					break;
+				case 'new york'		:	$state = "NY";
+					break;
+				case 'north carolina':	$state = "NC";
+					break;
+				case 'north dakota'	:	$state = "ND";
+					break;
+				case 'ohio'			:	$state = "OH";
+					break;
+				case 'oklahoma'		:	$state = "OK";
+					break;
+				case 'oregon'		:	$state = "OR";
+					break;
+				case 'pennsylvania'	:	$state = "PA";
+					break;
+				case 'rhode island'	:	$state = "RI";
+					break;
+				case 'south carolina':	$state = "SC";
+					break;
+				case 'south dakota'	:	$state = "SD";
+					break;
+				case 'tennessee'	:	$state = "TN";
+					break;
+				case 'texas'		:	$state = "TX";
+					break;
+				case 'utah'			:	$state = "UT";
+					break;
+				case 'vermont'		:	$state = "VT";
+					break;
+				case 'virginia'		:	$state = "VA";
+					break;
+				case 'washington'	:	$state = "WA";
+					break;
+				case 'west virginia':	$state = "WV";
+					break;
+				case 'wisconsin'	:	$state = "WI";
+					break;
+				case 'wyoming'		:	$state = "WY";
+					break;
+			}
 		}
-		
-		return strtolower($y);
-	
-	}else{	
-		return $state;
+		if ($country == 'canada'){
+			switch ($state){
+				case 'alberta'		:	$state = "AB";
+					break;
+				case 'british columbia':$state = "BC";
+					break;
+				case 'manitoba'		:	$state = "MB";
+					break;
+				case 'new brunswick':	$state = "NB";
+					break;
+				case 'newfoundland and labrador':$state = "NL";
+					break;
+				case 'nova scotia'	:	$state = "NS";
+					break;
+				case 'prince edward island':$state = "PE";
+					break;
+				case 'quebec'		:	$state = "QC";
+					break;
+				case 'saskatchewan'	:	$state = "SK";
+					break;
+				case 'yukon'		:	$state = "YK";
+					break;
+			}
+		}
+		return strtolower($state);
 	}
 }
+
