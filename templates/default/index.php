@@ -8,22 +8,26 @@
 add_action('action_hook_espresso_custom_template_default','espresso_custom_template_default');
 
 function espresso_custom_template_default(){
+	
+	global $org_options, $this_event_id, $events, $ee_attributes;
+	
+	//Extract shortcode attributes, if any.
+	extract($ee_attributes);
+	
 	//Load the css file
 	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 	
-	//Defaults
-	global $org_options, $this_event_id, $events;
-	$featured_image = FALSE; //Show the featured image for each event, instead of the date, to the left of the event title.
-	$temp_month = ''; //Clears the month name
+	//Clears the month name
+	$temp_month = ''; 
 	
 	//Uncomment to view the data being passed to this file
 	//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';
 	
 	?>
-	<table class="cal-table-list">
 
-		<?php 
+<table class="cal-table-list">
+	<?php 
 		foreach ($events as $event){
 			//Debug
 			$this_event_id		= $event->id;
@@ -41,15 +45,15 @@ function espresso_custom_template_default(){
 			$full_month = event_date_display($event->start_date, "F");
 			if ($temp_month != $full_month){
 				?>
-				<tr class="cal-header-month">
-					<th class="cal-header-month-name" id="calendar-header-<?php echo $full_month; ?>" colspan="3"><?php echo $full_month; ?></th>
-				</tr>
-				<tr class="cal-header">
-					<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
-					<th class="th-event-info"><?php _e('Band / Artist','event_espresso'); ?></th>
-					<th><?php _e('Tickets','event_espresso'); ?></th>
-				</tr>
-				<?php
+	<tr class="cal-header-month">
+		<th class="cal-header-month-name" id="calendar-header-<?php echo $full_month; ?>" colspan="3"><?php echo $full_month; ?></th>
+	</tr>
+	<tr class="cal-header">
+		<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
+		<th class="th-event-info"><?php _e('Band / Artist','event_espresso'); ?></th>
+		<th><?php _e('Tickets','event_espresso'); ?></th>
+	</tr>
+	<?php
 				$temp_month = $full_month;
 			}
 			
@@ -62,38 +66,26 @@ function espresso_custom_template_default(){
 				event_espresso_user_login();
 			}else{
 				?>
-				<tr class="">
-					<?php if ($featured_image == FALSE) {?>
-					<td class="td-date-holder">
-						<div class="dater">
-							<p class="cal-day-title"><?php echo event_date_display($event->start_date, "l"); ?></p>
-							<p class="cal-day-num"><?php echo event_date_display($event->start_date, "j"); ?></p>
-							<p><span><?php echo event_date_display($event->start_date, "M"); ?></span></p>
-						</div>
-					</td>
-					<?php }else{?>
-					<td class="td-fet-image">
-						<div class="featured-image">
-						<?php 
-						//Featured image
-						echo apply_filters('filter_hook_espresso_display_featured_image', $event->id, !empty($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : '');?>
-						</div>
-					</td>
-					<?php }?>
-					<td class="td-event-info">
-						<span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name); ?></a></span>
-						<p>
-							<?php _e('When:', 'event_espresso'); ?> <?php echo event_date_display($event->start_date); ?><br />
-							<?php _e('Where:', 'event_espresso'); ?> <?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
-							<?php _e('Price: ', 'event_espresso'); ?> <?php echo  $org_options['currency_symbol'].$event->event_cost; ?>
-						</p>
-						<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?>
-					</td>
-					<td class="td-event-register"><?php echo $live_button ?></td>
-				</tr>
-		<?php
+	<tr class="">
+		<td class="td-date-holder"><div class="dater">
+				<p class="cal-day-title"><?php echo event_date_display($event->start_date, "l"); ?></p>
+				<p class="cal-day-num"><?php echo event_date_display($event->start_date, "j"); ?></p>
+				<p><span><?php echo event_date_display($event->start_date, "M"); ?></span></p>
+			</div></td>
+		<td class="td-event-info"><span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name); ?></a></span>
+			<p>
+				<?php _e('When:', 'event_espresso'); ?>
+				<?php echo event_date_display($event->start_date); ?><br />
+				<?php _e('Where:', 'event_espresso'); ?>
+				<?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
+				<?php _e('Price: ', 'event_espresso'); ?>
+				<?php echo  $org_options['currency_symbol'].$event->event_cost; ?> </p>
+			<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?></td>
+		<td class="td-event-register"><?php echo $live_button ?></td>
+	</tr>
+	<?php
 			}// close is_user_logged_in	
 		 } //close foreach ?>
-	</table>
-	
-<?php } ?>
+</table>
+<?php 
+}
