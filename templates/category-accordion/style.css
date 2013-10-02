@@ -1,0 +1,114 @@
+ul{
+  padding-left:0;
+}
+
+#espresso-select {
+	font-family: 'Open Sans', sans-serif;
+	margin:0;
+	padding:0;
+	list-style:none;
+	/* Clear floats */
+	float:left;
+	width:100%;
+	position:relative;
+	z-index:5;
+	height:auto; /* change this to 47px if you do NOT want the content pushed down when menu activ */
+	line-height:1.9;
+}
+#espresso-select h3 {
+	font-size:24px;
+	font-weight:300;
+	margin:0;
+	padding:0 0 0 1em;
+	line-height: 1.9;
+}
+ul#espresso-select,
+ul#espresso-select:hover{
+	background: -webkit-linear-gradient(90deg,  #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+	background: -moz-linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+	background: -o-linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+	background: linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+}
+#espresso-select li{
+	display:block;
+	position:relative;
+	margin: 0;
+	border-bottom: #eee thin solid;
+}
+/*
+#espresso-select li:first-child{
+	border-top: 1px solid #d9d9d9;
+  	border-bottom: 1px solid #d9d9d9;
+  }
+  */
+#espresso-select a {
+    display:block;
+    color: #000;
+    text-decoration:none;
+    background-color: #fff;
+    padding-left: 4px;
+}
+#espresso-select span {
+	background-color: #999;
+	display: block;
+}
+#espresso-select a:hover{
+    color: #333;
+    text-decoration:none;
+}
+/*--- DROPDOWN ---*/
+#espresso-select ul{
+    background:#fff;
+    list-style:none;
+    width:100%;
+}
+#espresso-select ul li{
+	font-size:16px;
+    padding-top:0;
+    float:none;
+    display:block;
+    border-top:none;
+    /*border-bottom: 1px solid #d9d9d9;*/
+}
+#espresso-select ul a{
+	white-space:nowrap;
+}
+#espresso-select ul li a {
+	padding:.5em 1em;
+}
+.dd_js li ul {
+	display:none;
+}
+.dd_js li:hover ul {
+    display:block;
+}
+#espresso-select li:hover a {
+    text-decoration:none;
+}
+#espresso-select li:hover ul a{
+	text-decoration:none;
+}
+#espresso-select li:hover ul li a:hover{
+	/*color:#996b42;*/
+}
+#espresso-select ul a{
+	white-space:nowrap;
+}
+#espresso-select li:hover a{
+	text-decoration:none;
+}
+#espresso-select li:hover ul li a:hover{
+    background:#f7f7f7;
+}
+i.icon-chevron-sign-down{
+	display:block;
+	position:absolute;
+	right:2%;
+	top:0;
+	font-size:18px;
+	line-height:2;
+	margin-top:5px;
+	padding:0;
+	color: #999;
+	text-shadow:0 1px 0 #47322d;
+}

@@ -7,7 +7,7 @@ if (!function_exists('espresso_css_dropdown')) {
 	function espresso_css_dropdown(){	
 		global $events, $ee_attributes;
 		
-		// now extract shortcode attributes
+		//Extract shortcode attributes
 		extract($ee_attributes);
 		
 		//Custom shortcode parameter: css_file
