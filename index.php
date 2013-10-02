@@ -25,7 +25,12 @@
 
 //Create the shortcode
 function espresso_custom_template_output($attributes){
+	ob_start();
 	do_action('action_hook_espresso_custom_template_output', $attributes);
+	//Ouput the content
+	$buffer = ob_get_contents();
+	ob_end_clean();
+	return $buffer;
 }
 add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 
@@ -181,17 +186,11 @@ function espresso_custom_template_display($attributes){
 			$path = 'templates/'.$template_name.'/index.php';
 		}
 	}
-	
-	//Output the content
-	ob_start();
 	require_once( $path );
 	
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
 	
-	//Ouput the content
-	$buffer = ob_get_contents();
-	ob_end_clean();
-	echo $buffer;
+	
 	unset($events, $ee_attributes); //Unset the $events global variable
 }
