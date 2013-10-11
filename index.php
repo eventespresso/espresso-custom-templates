@@ -25,7 +25,12 @@
 
 //Create the shortcode
 function espresso_custom_template_output($attributes){
+	ob_start();
 	do_action('action_hook_espresso_custom_template_output', $attributes);
+	//Ouput the content
+	$buffer = ob_get_contents();
+	ob_end_clean();
+	return $buffer;
 }
 add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 
@@ -37,8 +42,7 @@ function espresso_custom_template_display($attributes){
 		define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
 	}
 
-	global $wpdb, $org_options, $events, $this_is_a_reg_page;
-
+	global $wpdb, $org_options, $events;
 
 	//Default variables
 	$org_options = get_option('events_organization_settings');
@@ -46,6 +50,7 @@ function espresso_custom_template_display($attributes){
 	$currency_symbol = $org_options['currency_symbol'];
 	$cat_sql = '';
 	$use_category = false;
+
 
 	//Create the default attributes
 	$default_attributes = array(
@@ -61,7 +66,7 @@ function espresso_custom_template_display($attributes){
 			'order_by'					=> '',					//Order by fields in the database, such as start_date
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
 			'user_id'					=> '',					//List events by user id
-			'template_name'				=> 'default'
+			'template_name'				=> 'default',
 	);
 
 	// loop thru default atts
@@ -178,21 +183,14 @@ function espresso_custom_template_display($attributes){
 		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php')) {
 			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php';
 		}else{
-			$this_is_a_reg_page = true;
 			$path = 'templates/'.$template_name.'/index.php';
 		}
 	}
-
-	//Output the content
-	ob_start();
 	require_once( $path );
 
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
 
-	//Ouput the content
-	$buffer = ob_get_contents();
-	ob_end_clean();
-	echo $buffer;
+
 	unset($events, $ee_attributes); //Unset the $events global variable
 }
