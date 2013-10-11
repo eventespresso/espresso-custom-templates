@@ -2,6 +2,9 @@
 //Template Name: Category Accordion
 //Description: Will display the categories in bars, once clicked events associated with that category will appear in an "accordion" style. If category colours are turned on, the block to the left will be that colour, otherwise it will default to grey.
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="category-accordion"]
+//
+//Extra parameter: exclude="1,2,3"
+//This uses the category IDs and will exclude them from being listed. Use a single number or a comma separated list of numbers.
 
 add_action('action_hook_espresso_custom_template_category-accordion','espresso_category_accordion', 10, 1);
 if (!function_exists('espresso_category_accordion')) {
@@ -32,6 +35,19 @@ if (!function_exists('espresso_category_accordion')) {
 		//var_dump($temp_cats);
 		//var_dump($ee_attributes);
 		//var_dump($events);
+
+		$exclude = explode(',', $ee_attributes['exclude']);
+
+		if($exclude) {
+			foreach($exclude as $exc) {
+				foreach($temp_cats as $subKey => $subArray) {
+					if($subArray->id == $exc) {
+						unset($temp_cats[$subKey]);
+					}
+				}
+			}
+
+		}
 ?>
 
 
