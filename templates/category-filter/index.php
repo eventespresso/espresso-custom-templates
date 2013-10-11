@@ -42,9 +42,7 @@ function espresso_custom_template_category_filter(){
       <thead class="espresso-table-header-row">
       <tr>
           <th class="th-group"><?php _e('Course','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('Location','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('City','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('State','event_espresso'); ?></th>
+          <th class="th-group"><?php _e('Venue','event_espresso'); ?></th>
           <th class="th-group"><?php _e('Date','event_espresso'); ?></th>
           <th class="th-group"><?php _e('Time','event_espresso'); ?></th>
           <th class="th-group"><?php _e('','event_espresso'); ?></th>
@@ -86,16 +84,11 @@ function espresso_custom_template_category_filter(){
             <?php echo stripslashes_deep($event->event_name) ?>
           </td>
           <td class="td-group">
-            <?php echo $event->venue_address ?>
+            <?php echo $event->venue_name ?>
           </td>
+          
           <td class="td-group">
-            <?php echo $event->venue_city ?>
-          </td>
-      	  <td class="td-group">
-            <?php echo $event->venue_state ?>
-          </td>
-          <td class="td-group">
-              <?php echo event_date_display($event->start_date, $format = 'l, M d, Y') ?>
+              <?php echo event_date_display($event->start_date, $format = 'M d, Y') ?>
           </td>
           <td class="td-group">
               <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?>
