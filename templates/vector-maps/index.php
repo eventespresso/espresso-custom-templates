@@ -7,6 +7,7 @@
 //This template only has a couple of maps and is geared to use North America. You can find more maps and details on how to create them here https://github.com/manifestinteractive/jqvmap
 
 // CANADIAN? Use this shortcode parameter: country="canada"
+// Please note the shorthand for Northwest Territories is NWT
 
 // BRITISH? Use this shortcode parameter: country="uk"
 //There is a basic Regional map based on http://en.wikipedia.org/wiki/Regions_of_England. This requires specific teminology used in the State field of the venue. E.g East of England (East England wont work!) or London as a state. Fiddly but we don't have specifc codes for regions.
@@ -116,7 +117,8 @@ function espresso_custom_template_vector_maps(){
 				<?php echo stripslashes_deep($event->venue_address.', '.$event->venue_city.', '.$event->venue_state); ?><br />
 				<?php _e('Price: ', 'event_espresso'); ?>
 				<?php echo  $org_options['currency_symbol'].$event->event_cost; ?> </p>
-			<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?></td>
+			<?php echo espresso_format_content(array_shift(explode('<!--more-->', $event->event_desc))); //Includes <p> tags ?>
+		</td>
 		<td class="td-event-register"><?php echo $live_button ?></td>
 	</tr>
 	<?php
