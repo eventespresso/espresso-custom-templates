@@ -3,7 +3,7 @@
 //Description: This template creates a grid style view of events.
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="grid" max_days="30" category_identifier="concerts"].
 //Requirements: CSS skills to customize styles, HTML/PHP to restructure.
-//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "grid-view",
+//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "grid",
 
 // IMPORTANT you may need to tweak the box or title sizes if your events have long titles.
 
@@ -14,9 +14,6 @@ function espresso_custom_template_grid(){
 	//Load the css file
 	wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
 	wp_enqueue_style( 'espresso_custom_template_grid');
-
-	wp_register_script( 'jquery_dropdown', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/js/jquery.grid.js', array('jquery'), '0.1', TRUE );
-	wp_enqueue_script( 'jquery_dropdown' );
 
 	//Defaults
 	global $org_options, $this_event_id, $events;
@@ -46,8 +43,7 @@ function espresso_custom_template_grid(){
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
 
-			$image = $event_meta['event_thumbnail_url'];
-			if($image == '') { $image = ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg'; }
+			$image = !empty($image) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg';
 
 			//uncomment this and comment out the above line if you want to use the Organisation logo
 			//if($image == '') { $image = $org_options['default_logo_url']; }
