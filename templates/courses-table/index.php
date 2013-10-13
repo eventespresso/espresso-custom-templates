@@ -1,29 +1,29 @@
-<?php 
+<?php
 //Template: Course Listings Table
-//Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days. 
+//Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days.
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="courses-table"]
 //Requirements: CSS skills to customize styles, some renaming of the table columns
 
-//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default", 
+//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default",
 add_action('action_hook_espresso_custom_template_courses-table','espresso_custom_template_courses_table');
 
 function espresso_custom_template_courses_table(){
-	
+
 	global $this_event_id, $events, $ee_attributes;
-	
+
 	//Extract shortcode attributes, if any.
 	extract($ee_attributes);
-	
+
 	//Check for Multi Event Registration
 	$multi_reg = false;
 	if (function_exists('event_espresso_multi_reg_init')) {
 		$multi_reg = true;
 	}
-	
+
 	$cart_link 	= '';
 	?>
 	<table class="espresso-table" width="100%">
-  
+
       <thead class="espresso-table-header-row">
       <tr>
           <th class="th-group"><?php _e('Course','event_espresso'); ?></th>
@@ -38,7 +38,7 @@ function espresso_custom_template_courses_table(){
 	<tbody>
 
       <?php
-      
+
       foreach ($events as $event){
 		$button_text 		= __('Register', 'event_espresso');
 		$alt_button_text	= __('View Details', 'event_espresso');//For alternate registration pages
@@ -46,9 +46,13 @@ function espresso_custom_template_courses_table(){
 		$button_text		= !empty($externalURL) ? $alt_button_text : $button_text;
 		$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 		$open_spots			= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
-		$live_button 		= $open_spots < 1 ? __('Closed', 'event_espresso') : '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
-		
-		if ($multi_reg && event_espresso_get_status($event->id) == 'ACTIVE' && empty($externalURL)) { 
+		$live_button 		= $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ? __('Closed', 'event_espresso') : '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
+
+if ($event->allow_overflow == 'Y'){
+      $live_button = '<a href="'.espresso_reg_url($e['overflow_event_id']).'">'.__('Join Waiting List').'</a>';
+}
+
+		if ($multi_reg && event_espresso_get_status($event->id) == 'ACTIVE' && empty($externalURL)) {
 			$params = array(
 				//REQUIRED, the id of the event that needs to be added to the cart
 				'event_id' => $event->id,
@@ -63,13 +67,13 @@ function espresso_custom_template_courses_table(){
 
 			$cart_link = event_espresso_cart_link($params);
 		}
-		
-		
+
+
 	   ?>
       <tr class="espresso-table-row">
        	<td class="td-group">
             <?php echo stripslashes_deep($event->event_name) ?>
-          </td>	
+          </td>
           <td class="td-group">
             <?php echo $event->venue_address ?>
           </td>
@@ -85,7 +89,7 @@ function espresso_custom_template_courses_table(){
           <td class="td-group">
               <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?>
           </td>
-         
+
           <td class="td-group">
               <?php echo $live_button. $cart_link ?>
           </td>

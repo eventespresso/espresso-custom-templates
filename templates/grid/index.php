@@ -32,13 +32,22 @@ function espresso_custom_template_grid(){
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
 			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
+			$event_status 		= 'Register Now!';
 
 			//use the wordpress date format.
 			$date_format = get_option('date_format');
 
-			//this will ignore an event if the event is maxed out
+
 			$att_num = get_number_of_attendees_reg_limit($event->id, 'num_attendees');
-			if ( $att_num >= $event->reg_limit  ) { continue; $live_button = 'Closed';  }
+			//Uncomment the below line to hide an event if it is maxed out
+			//if ( $att_num >= $event->reg_limit  ) { continue; $live_button = 'Closed';  }
+			if ( $att_num >= $event->reg_limit || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';  }
+
+			//waitlist
+			if ($event->allow_overflow == 'Y'){
+			$registration_url 	= espresso_reg_url($event->overflow_event_id);
+			$event_status 		= 'Join Waiting List';
+			}
 
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
@@ -67,7 +76,7 @@ function espresso_custom_template_grid(){
 
                             <?php echo date($date_format, strtotime($event->start_date)) ?><br />
 
-                            Register Now!
+                            <?php echo $event_status; ?>
 
                             <?php 			}// close is_user_logged_in	 ?>
 
