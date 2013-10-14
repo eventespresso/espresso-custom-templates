@@ -45,8 +45,8 @@ function espresso_custom_template_grid(){
 
 			//waitlist
 			if ($event->allow_overflow == 'Y'){
-			$registration_url 	= espresso_reg_url($event->overflow_event_id);
-			$event_status 		= 'Join Waiting List';
+				$registration_url 	= espresso_reg_url($event->overflow_event_id);
+				$event_status 		= 'Join Waiting List';
 			}
 
 			//Gets the member options, if the Members add-on is installed.

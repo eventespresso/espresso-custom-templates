@@ -43,7 +43,7 @@ function espresso_custom_template_default(){
 
 			//waitlist
 			if ($event->allow_overflow == 'Y'){
-			$live_button = '<a href="'.espresso_reg_url($e['overflow_event_id']).'">'.__('Join Waiting List').'</a>';
+				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
 			}
 
 			//Build the table headers
