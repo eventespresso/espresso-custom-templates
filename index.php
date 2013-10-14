@@ -186,7 +186,7 @@ function espresso_custom_template_display($attributes){
 			$path = 'templates/'.$template_name.'/index.php';
 		}
 	}
-	require_once( $path );
+	include_once( $path );
 
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
