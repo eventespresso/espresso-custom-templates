@@ -42,7 +42,7 @@ function espresso_custom_template_default(){
 			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/vector-maps/closed.png" alt="Buy Tickets">';  }
 
 			//waitlist
-			if ($event->allow_overflow == 'Y'){
+			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
 				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
 			}
 

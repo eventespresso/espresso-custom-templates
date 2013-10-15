@@ -44,7 +44,7 @@ function espresso_custom_template_grid(){
 			if ( $att_num >= $event->reg_limit || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';  }
 
 			//waitlist
-			if ($event->allow_overflow == 'Y'){
+			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
 				$registration_url 	= espresso_reg_url($event->overflow_event_id);
 				$event_status 		= 'Join Waiting List';
 			}

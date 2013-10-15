@@ -48,7 +48,7 @@ function espresso_custom_template_courses_table(){
 		$open_spots			= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
 		$live_button 		= $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ? __('Closed', 'event_espresso') : '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
 
-		if ($event->allow_overflow == 'Y'){
+		if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
 			  $live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
 		}
 

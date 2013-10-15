@@ -124,7 +124,7 @@ function espresso_custom_template_display($attributes){
 	$sql  = "SELECT e.*, ese.start_time, ese.end_time, p.event_cost ";
 
 	//Venue Fields
-	isset($org_options['use_venue_manager']) && $org_options['use_venue_manager'] == 'Y' ? $sql .= ", v.name venue_name, v.address venue_address, v.city venue_city, v.state venue_state, v.zip venue_zip, v.country venue_country, v.meta venue_meta " : '';
+	isset($org_options['use_venue_manager']) && $org_options['use_venue_manager'] == 'Y' ? $sql .= ", v.name venue_name, v.address venue_address, v.city venue_city, v.state venue_state, v.zip venue_zip, v.country venue_country, v.meta venue_meta, v.id venue_id " : '';
 
 	if ($use_category == true){
 		$sql	.= ", c.category_name, c.category_desc, c.display_desc ";
