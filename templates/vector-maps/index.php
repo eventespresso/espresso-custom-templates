@@ -89,7 +89,7 @@ function espresso_custom_template_vector_maps(){
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
+				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/vector-maps/waiting.png" alt="Join Waiting List"></a>';
 			}
 
 			//Build the table headers

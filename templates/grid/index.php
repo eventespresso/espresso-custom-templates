@@ -41,12 +41,12 @@ function espresso_custom_template_grid(){
 			$att_num = get_number_of_attendees_reg_limit($event->id, 'num_attendees');
 			//Uncomment the below line to hide an event if it is maxed out
 			//if ( $att_num >= $event->reg_limit  ) { continue; $live_button = 'Closed';  }
-			if ( $att_num >= $event->reg_limit || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';  }
+			if ( $att_num >= $event->reg_limit ) { $event_status = 'Sold Out';  } elseif ( event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';}
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
 				$registration_url 	= espresso_reg_url($event->overflow_event_id);
-				$event_status 		= 'Join Waiting List';
+				$event_status 		= 'Sold Out - Join Waiting List';
 			}
 
 			//Gets the member options, if the Members add-on is installed.

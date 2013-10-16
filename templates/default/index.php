@@ -39,11 +39,11 @@ function espresso_custom_template_default(){
 			$open_spots 		= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
 
 			//This line changes the button text to display "Closed" if the attendee limit is reached.
-			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/vector-maps/closed.png" alt="Buy Tickets">';  }
+			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/closed.png" alt="Buy Tickets">';  }
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
+				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/waiting.png" alt="Join Waiting List"></a>';
 			}
 
 			//Build the table headers
@@ -56,7 +56,7 @@ function espresso_custom_template_default(){
 	<tr class="cal-header">
 		<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
 		<th class="th-event-info"><?php _e('Band / Artist','event_espresso'); ?></th>
-		<th><?php _e('Tickets','event_espresso'); ?></th>
+		<th class="th-tickets"><?php _e('Tickets','event_espresso'); ?></th>
 	</tr>
 	<?php
 				$temp_month = $full_month;

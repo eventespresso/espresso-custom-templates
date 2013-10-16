@@ -58,7 +58,8 @@ function espresso_custom_template_category_filter(){
 		$externalURL 		= $event->externalURL;
 		$button_text		= !empty($externalURL) ? $alt_button_text : $button_text;
 		$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
-		$open_spots			= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
+		//$open_spots			= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
+		$open_spots			= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
 		$live_button 		= $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ? __('Closed', 'event_espresso') : '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
 
 		if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
@@ -80,7 +81,16 @@ function espresso_custom_template_category_filter(){
 
 			$cart_link = event_espresso_cart_link($params);
 		}
+		if($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE' || $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE') {
+				$params = array(
+				'event_id' => $event->id,
+				'anchor' => __("", 'event_espresso'),
+				'event_name' => $event->event_name,
+				'separator' => __("", 'event_espresso')
+			);
 
+			$cart_link = event_espresso_cart_link($params);
+		}
 
 	   ?>
       <tr class="espresso-table-row cat-<?php echo $event->category_id; ?>">
@@ -123,6 +133,10 @@ jQuery(document).ready(function(){
 });
 
 </script>
+
+<style>
+.espresso-table-row td .event_espresso_error { display:none;}
+</style>
 
 <?php
 }

@@ -101,3 +101,6 @@ p.cal-day-num {
 	padding: 40px 5px 5px 0px !important;
 }
 
+.th-tickets {
+	min-width: 90px;
+}
