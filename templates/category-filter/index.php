@@ -109,7 +109,7 @@ function espresso_custom_template_category_filter(){
           </td>
 
           <td class="td-group">
-              <?php echo $live_button. $cart_link ?>
+              <?php echo event_espresso_get_status($event->id) == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?>
           </td>
       </tr>
       <?php } //close foreach ?>
@@ -132,11 +132,6 @@ jQuery(document).ready(function(){
 
 });
 
-</script>
-
-<style>
-.espresso-table-row td .event_espresso_error { display:none;}
-</style>
 
 <?php
 }

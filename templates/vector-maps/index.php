@@ -49,7 +49,14 @@ function espresso_custom_template_vector_maps(){
 	$temp_venues = $wpdb->get_results($sql);
 
 	foreach ($events as $venues) {
-		if($venues->venue_state) { $ven_event_count[$venues->venue_state]++; }
+		if($venues->venue_state) {
+			if(!isset($ven_event_count[$venues->venue_state]))
+			{
+				$ven_event_count[$venues->venue_state] = 1;
+			} else {
+				$ven_event_count[$venues->venue_state]++;
+			}
+		}
 	}
 
 	echo "<div id='hidden_states'>";
@@ -77,6 +84,8 @@ function espresso_custom_template_vector_maps(){
 
 		foreach ($events as $event){
 			$this_event_id		= $event->id;
+			$this_event_desc 	= explode('<!--more-->', $event->event_desc);
+			$this_event_desc 	= array_shift($this_event_desc);
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;

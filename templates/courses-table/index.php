@@ -103,16 +103,12 @@ function espresso_custom_template_courses_table(){
           </td>
 
           <td class="td-group">
-              <?php echo $live_button. $cart_link ?>
+              <?php echo event_espresso_get_status($event->id) == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?>
           </td>
       </tr>
       <?php } //close foreach ?>
 </tbody>
 </table>
 
-
-<style>
-.espresso-table-row td .event_espresso_error { display:none;}
-</style>
 <?php
 }

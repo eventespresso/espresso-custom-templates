@@ -52,7 +52,7 @@ function espresso_custom_template_grid(){
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
 
-			$image = !empty($image) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg';
+			$image = isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg';
 
 			//uncomment this and comment out the above line if you want to use the Organisation logo
 			//if($image == '') { $image = $org_options['default_logo_url']; }

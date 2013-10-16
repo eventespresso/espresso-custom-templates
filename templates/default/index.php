@@ -4,6 +4,9 @@
 //Shortcode Example: [EVENT_CUSTOM_VIEW template_name="default" max_days="30" category_identifier="concerts"].
 //Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
 
+// Parameter: show_featured=true/false. If set to true, the dates will be replaced with the featured images.
+// Parameter: change_title="something". If set the Band/Artist default title will be change to the strng provided.
+
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default",
 add_action('action_hook_espresso_custom_template_default','espresso_custom_template_default');
 
@@ -13,6 +16,10 @@ function espresso_custom_template_default(){
 
 	//Extract shortcode attributes, if any.
 	extract($ee_attributes);
+
+	if(isset($ee_attributes['show_featured'])) { $show_featured = $ee_attributes['show_featured']; }
+
+	if(isset($ee_attributes['change_title'])) { $change_title = $ee_attributes['change_title']; }
 
 	//Load the css file
 	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
@@ -31,12 +38,15 @@ function espresso_custom_template_default(){
 		foreach ($events as $event){
 			//Debug
 			$this_event_id		= $event->id;
+			$this_event_desc	= explode('<!--more-->', $event->event_desc);
+			$this_event_desc 	= array_shift($this_event_desc);
 			$member_only		= !empty($event->member_only) ? $event->member_only : '';
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
 			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 			$live_button 		= '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
 			$open_spots 		= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
+			$featured_image		= isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : FALSE;
 
 			//This line changes the button text to display "Closed" if the attendee limit is reached.
 			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/closed.png" alt="Buy Tickets">';  }
@@ -54,8 +64,8 @@ function espresso_custom_template_default(){
 		<th class="cal-header-month-name" id="calendar-header-<?php echo $full_month; ?>" colspan="3"><?php echo $full_month; ?></th>
 	</tr>
 	<tr class="cal-header">
-		<th><?php echo $featured_image == FALSE ? __('Date','event_espresso') :  __('Image','event_espresso'); ?></th>
-		<th class="th-event-info"><?php _e('Band / Artist','event_espresso'); ?></th>
+		<th><?php echo !isset($show_featured) || $show_featured === 'false' ? __('Date','event_espresso') :  '' ?></th>
+		<th class="th-event-info"><?php if(isset($change_title)) { echo $change_title; } else { _e('Band / Artist','event_espresso'); } ?></th>
 		<th class="th-tickets"><?php _e('Tickets','event_espresso'); ?></th>
 	</tr>
 	<?php
@@ -72,11 +82,23 @@ function espresso_custom_template_default(){
 			}else{
 				?>
 	<tr class="">
+
+
+		<?php
+
+		if(isset($show_featured ) && $show_featured === 'true') { ?>
+			<td class="td-fet-image"><div class="">
+				<img src="<?php echo $featured_image; ?>" />
+			</div></td>
+		<?php } else { ?>
 		<td class="td-date-holder"><div class="dater">
 				<p class="cal-day-title"><?php echo event_date_display($event->start_date, "l"); ?></p>
 				<p class="cal-day-num"><?php echo event_date_display($event->start_date, "j"); ?></p>
 				<p><span><?php echo event_date_display($event->start_date, "M"); ?></span></p>
-			</div></td>
+			<?php } ?>
+			</div>
+		</td>
+
 		<td class="td-event-info"><span class="event-title"><a href="<?php echo $registration_url ?>"><?php echo stripslashes_deep($event->event_name); ?></a></span>
 			<p>
 				<?php _e('When:', 'event_espresso'); ?>
