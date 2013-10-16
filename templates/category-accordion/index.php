@@ -22,11 +22,6 @@ if (!function_exists('espresso_category_accordion')) {
 		wp_register_style( 'espresso_category_accordion', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'templates/category-accordion/'.$css_file.'.css' );
 		wp_enqueue_style( 'espresso_category_accordion');
 
-		wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Open+Sans:400,700');
-		wp_enqueue_style( 'googleFonts');
-
-        wp_register_style('fontAwesome', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."templates/category-accordion/font-awesome/font-awesome.css" );
-		wp_enqueue_style( 'fontAwesome');
 
 		global $wpdb;
 		$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;

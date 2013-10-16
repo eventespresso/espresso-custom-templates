@@ -18,11 +18,6 @@ if (!function_exists('espresso_css_dropdown')) {
 		wp_register_style( 'espresso_css_dropdown', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'templates/css-dropdown/'.$css_file.'.css' );
 		wp_enqueue_style( 'espresso_css_dropdown');
 		
-		wp_register_style('googleFonts', 'http://fonts.googleapis.com/css?family=Open+Sans:400,700');
-		wp_enqueue_style( 'googleFonts');
-
-        wp_register_style('fontAwesome', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."templates/css-dropdown/font-awesome/font-awesome.css" );
-		wp_enqueue_style( 'fontAwesome');	
 ?>
 
 <div>
