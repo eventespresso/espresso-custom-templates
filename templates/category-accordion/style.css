@@ -34,6 +34,7 @@ ul#espresso-select:hover{
 	position:relative;
 	margin: 0;
 	border-bottom: #eee thin solid;
+	background:url(../images/arrow.png) no-repeat right;
 }
 /*
 #espresso-select li:first-child{
