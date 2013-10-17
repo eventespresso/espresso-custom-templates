@@ -9,7 +9,7 @@
 add_action('action_hook_espresso_custom_template_category-accordion','espresso_category_accordion', 10, 1);
 if (!function_exists('espresso_category_accordion')) {
 	function espresso_category_accordion(){
-		global $events, $ee_attributes;
+		global $org_options,$events, $ee_attributes;
 
 		//Extract shortcode attributes
 		extract($ee_attributes);
@@ -43,6 +43,12 @@ if (!function_exists('espresso_category_accordion')) {
 			}
 
 		}
+
+		//Check for Multi Event Registration
+		$multi_reg = false;
+		if (function_exists('event_espresso_multi_reg_init')) {
+			$multi_reg = true;
+		}
 ?>
 
 
@@ -68,19 +74,42 @@ if (!function_exists('espresso_category_accordion')) {
 		}
 		?>
         <li>
-            <h3><a href="#" class="event_category_name">
+            <h3><div class="event_category_name">
                 <?php echo $cats->category_name; ?>
-                </a></h3>
+                </div></h3>
             <i class="icon-chevron-sign-down"></i>
             <ul>
                 <?php
             foreach ($events as $event){
+
+            	//lets check the staus and attendee count
+				$open_spots			= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
+
+				if($open_spots < 1) {
+					$the_status = __('Sold Out.');
+				} elseif (event_espresso_get_status($event->id) == 'NOT_ACTIVE') {
+					$the_status = __('Closed.');
+				} else {
+					$the_status = 'Register Now!';
+				}
+
+				if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
+					$the_status = __('Join Waiting List');
+					$registration_url = espresso_reg_url($event->overflow_event_id);
+				}
+
+				//TODO: add in MER capability. Issue is, with current structure, whole <li> is a link, which is nice, adding in MER will cuase an additional <a> tag that drops the "add to cart" bit below the main register link, making it look really stupid - Dean
+
             	$arr=explode(",",$event->category_id);
             	foreach ($arr as $a) {
 	            	if ($a == $catcode) {
 	                $externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);?>
-	                <li><a class="a_event_title" id="a_event_title-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>"><?php echo stripslashes_deep($event->event_name)?><br />
-	                    <?php echo event_date_display($event->start_date, 'M j, Y'); ?></a> </li>
+	                <?php if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
+						$the_status = __('Join Waiting List');
+						$registration_url = espresso_reg_url($event->overflow_event_id);
+					}?>
+	                <li><a class="a_event_title" id="a_event_title-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>"><?php echo stripslashes_deep($event->event_name)?><span class="event_status"><?php echo $org_options['currency_symbol'].$event->event_cost; ?><br><?php echo $the_status; ?></span><br />
+	                    <?php echo event_date_display($event->start_date, 'M j, Y'); ?></a></li>
 	                <?php
 	            	}
             	}

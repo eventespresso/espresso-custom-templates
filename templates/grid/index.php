@@ -5,24 +5,40 @@
 //Requirements: CSS skills to customize styles, HTML/PHP to restructure.
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "grid",
 
+//Parameter: masonry=true - this will activate the jQuery Masonry plugin
+//Parameter: columnwidth="200"  -this will set the column width in pixels. Will only work if masonry=ture is also set.
+
 // IMPORTANT you may need to tweak the box or title sizes if your events have long titles.
 
 
 add_action('action_hook_espresso_custom_template_grid','espresso_custom_template_grid');
 
 function espresso_custom_template_grid(){
-	//Load the css file
-	wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
-	wp_enqueue_style( 'espresso_custom_template_grid');
 
 	//Defaults
-	global $org_options, $this_event_id, $events;
+	global $org_options, $this_event_id, $events, $ee_attributes;
+
+	if(isset($ee_attributes['masonry'])) { $masonry = $ee_attributes['masonry']; }
+	if(isset($ee_attributes['columnwidth'])) { $columnwidth = $ee_attributes['columnwidth']; } //for masonrygrid
+
+	if(isset($masonry) && $masonry == 'true') {
+		wp_enqueue_script( 'jquery-masonry');
+		wp_register_style( 'espresso_custom_template_grid_masonry_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style_masonry.css" );
+		wp_enqueue_style( 'espresso_custom_template_grid_masonry_css');
+		$default_image = "default_masonry";
+	}
+	else {
+		//Load the css file
+		wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
+		wp_enqueue_style( 'espresso_custom_template_grid');
+		$default_image = "default";
+	}
 
 	//Uncomment to view the data being passed to this file
 	//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';
 
 	?>
-	<div class="">
+	<div id="mainwrapper" class=" masonry js-masonry">
 
 		<?php
 		foreach ($events as $event){
@@ -52,7 +68,7 @@ function espresso_custom_template_grid(){
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
 
-			$image = isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg';
+			$image = isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/' . $default_image . '.jpg';
 
 			//uncomment this and comment out the above line if you want to use the Organisation logo
 			//if($image == '') { $image = $org_options['default_logo_url']; }
@@ -60,7 +76,7 @@ function espresso_custom_template_grid(){
 				?>
 
 
-            <div class="ee_grid_box">
+            <div class="ee_grid_box item" style="width:<?php echo $columnwidth; ?>px">
                 <a id="a_register_link-<?php echo $event->id; ?>" href="<?php echo $registration_url; ?>" class="darken">
                     <img src="<?php echo $image; ?>" alt="" />
                     <span>
@@ -91,3 +107,15 @@ function espresso_custom_template_grid(){
 	</div>
 
 <?php } ?>
+
+
+
+<script>
+jQuery( document ).ready( function( $ ) {
+    $( '#mainwrapper' ).masonry( {
+    	columnWidth: 60,
+    	itemSelector: '.ee_grid_box',
+        isAnimated: true
+    } );
+} );
+</script>

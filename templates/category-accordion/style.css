@@ -21,6 +21,8 @@ ul{
 	margin:0;
 	padding:0 0 0 1em;
 	line-height: 1.9;
+	background-color: #fff;
+	margin-left: 25px;
 }
 ul#espresso-select,
 ul#espresso-select:hover{
@@ -48,10 +50,12 @@ ul#espresso-select:hover{
     background-color: #fff;
     padding-left: 4px;
 }
+
 #espresso-select span {
 	background-color: #999;
 	display: block;
 }
+
 #espresso-select a:hover{
     color: #333;
     text-decoration:none;
@@ -97,7 +101,8 @@ ul#espresso-select:hover{
 #espresso-select li:hover a{
 	text-decoration:none;
 }
-#espresso-select li:hover ul li a:hover{
+#espresso-select li:hover ul li a:hover,
+#espresso-select span.event_status:hover {
     background:#f7f7f7;
 }
 i.icon-chevron-sign-down{
@@ -111,4 +116,11 @@ i.icon-chevron-sign-down{
 	padding:0;
 	color: #999;
 	text-shadow:0 1px 0 #47322d;
+}
+
+
+#espresso-select span.event_status {
+	float:right;
+	background-color: transparent;
+	text-align: right;
 }
