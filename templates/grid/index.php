@@ -20,18 +20,18 @@ function espresso_custom_template_grid(){
 
 	if(isset($ee_attributes['masonry'])) { $masonry = $ee_attributes['masonry']; }
 	if(isset($ee_attributes['columnwidth'])) { $columnwidth = $ee_attributes['columnwidth']; } //for masonrygrid
+	if(isset($ee_attributes['default_image'])) { $default_image = $ee_attributes['default_image']; } //for masonrygrid
 
 	if(isset($masonry) && $masonry == 'true') {
 		wp_enqueue_script( 'jquery-masonry');
 		wp_register_style( 'espresso_custom_template_grid_masonry_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style_masonry.css" );
 		wp_enqueue_style( 'espresso_custom_template_grid_masonry_css');
-		$default_image = "default_masonry";
 	}
 	else {
 		//Load the css file
 		wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
 		wp_enqueue_style( 'espresso_custom_template_grid');
-		$default_image = "default";
+		$columnwidth = '';
 	}
 
 	//Uncomment to view the data being passed to this file
@@ -68,7 +68,8 @@ function espresso_custom_template_grid(){
 			//Gets the member options, if the Members add-on is installed.
 			$member_options = get_option('events_member_settings');
 
-			$image = isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/' . $default_image . '.jpg';
+			if(!isset($default_image)) { $default_image = ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH . 'templates/grid/default.jpg';}
+			$image = isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : $default_image;
 
 			//uncomment this and comment out the above line if you want to use the Organisation logo
 			//if($image == '') { $image = $org_options['default_logo_url']; }
