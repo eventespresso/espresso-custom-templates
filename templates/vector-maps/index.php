@@ -13,6 +13,8 @@
 //There is a basic Regional map based on http://en.wikipedia.org/wiki/Regions_of_England. This requires specific teminology used in the State field of the venue. E.g East of England (East England wont work!) or London as a state. Fiddly but we don't have specifc codes for regions.
 //Find us an SVG map of the UK's counties! Everything we can find is geared to just England...
 
+//AUSTRALIAN? Use this shortcode parameter: country="australia"
+
 add_action('action_hook_espresso_custom_template_vector-maps','espresso_custom_template_vector_maps');
 
 function espresso_custom_template_vector_maps(){
