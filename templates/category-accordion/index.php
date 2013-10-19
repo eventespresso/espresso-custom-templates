@@ -31,7 +31,7 @@ if (!function_exists('espresso_category_accordion')) {
 		//var_dump($ee_attributes);
 		//var_dump($events);
 
-		$exclude = explode(',', $ee_attributes['exclude']);
+		$exclude = isset($ee_attributes['exclude']) ? explode(',', $ee_attributes['exclude']) : false;
 
 		if($exclude) {
 			foreach($exclude as $exc) {
