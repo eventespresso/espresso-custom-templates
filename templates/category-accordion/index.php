@@ -1,15 +1,16 @@
 <?php
 /**
  *
- * @package    Custom Template Display
- * @subpackage Category Accordion
+ * @package    	Custom Template Display
+ * @subpackage 	Category Accordion
  * @since      
- * @author     Seth Shoultes <seth@eventespresso.com>
- * @copyright  Copyright (c) 2013, Seth Shoultes
- * @link       http://eventespresso.com
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @author     	Seth Shoultes <seth@eventespresso.com>
+ * @copyright  	Copyright (c) 2013, Seth Shoultes
+ * @link       	http://eventespresso.com
+ * @license    	http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
  * Template Name: Category Accordion
+ *
  * Description: Will display the categories in bars, once clicked events associated with that category 
  * will appear in an "accordion" style. If category colours are turned on, the block to the left will 
  * be that colour, otherwise it will default to grey.
@@ -17,6 +18,7 @@
  *
  * Extra parameter: exclude="1,2,3"
  * This uses the category IDs and will exclude them from being listed. Use a single number or a comma separated list of numbers.
+ *
  */
 
 add_action('action_hook_espresso_custom_template_category-accordion','espresso_category_accordion', 10, 1);
@@ -38,9 +40,8 @@ if (!function_exists('espresso_category_accordion')) {
 
 
 		global $wpdb;
-		$categories = $wpdb->get_results(
-			"SELECT * FROM wp_events_category_detail"
-			);
+		$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;
+		$categories = $wpdb->get_results($sql);
 
 		$exclude = isset($ee_attributes['exclude']) && !empty($ee_attributes['exclude']) ? explode(',', $ee_attributes['exclude']) : false;
 
@@ -53,12 +54,13 @@ if (!function_exists('espresso_category_accordion')) {
 				}
 			}
 		}
+
 		//Check for Multi Event Registration
 		$multi_reg = false;
 		if (function_exists('event_espresso_multi_reg_init')) {
 			$multi_reg = true;
 		}
-		echo '<div id="espresso_accordion"><ul class="espress-category-accordion">';
+		echo '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
 
 				foreach ($categories as $category) {
     			$catcode = $category->id;
@@ -76,11 +78,26 @@ if (!function_exists('espresso_category_accordion')) {
             echo '<h2 class="ee-category" style="color:' . $bg . '">';
             echo $category->category_name;
             echo '</h2></a>';
-            echo '<ul></li>';
+            echo '<ul><li>';
 
             foreach ($events as $event){
 
-            	//lets check the staus and attendee count
+
+            	$upload_dir = wp_upload_dir();
+            	$event_meta = unserialize($event->event_meta);
+            	$pathinfo = pathinfo( $event_meta['event_thumbnail_url'] );
+            	$dirname = $pathinfo['dirname'] . '/';
+            	$filename = $pathinfo['filename'];
+            	$ext = $pathinfo['extension'];
+            	$path_to_thumbnail = $dirname . $filename . '.' . $ext;
+
+            	if ( $pathinfo['dirname'] == $upload_dir['baseurl'] ) {
+					if ( ! file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext )) {
+						$path_to_thumbnail = file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext ) ? $event_meta['event_thumbnail_url'] : FALSE;
+					}
+			}
+				
+				//lets check the staus and attendee count
 				$open_spots	= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
 
 				if($open_spots < 1) {
@@ -107,18 +124,19 @@ if (!function_exists('espresso_category_accordion')) {
 						$the_status = __('Join Waiting List');
 						$registration_url = espresso_reg_url($event->overflow_event_id);
 					}
-	                echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</h3>';
+	                echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
+	                echo '<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />';
 	                echo '<h4 class="event-date">' . event_date_display($event->start_date, 'M j, Y') . '</h4>';
 	                echo '<p class="event-cost">' . $org_options['currency_symbol'];
 	                echo $event->event_cost . '</p>'; 
-	                echo '<p class="event-status">' . $the_status . '</p>';
-	                echo '</li>';
+	                echo '<p class="event-status"><a href="' . $registration_url . '"">' . $the_status . '</a></p>';
+	            	echo '</li>';
 	            	}
             	}
             }
-            echo '</ul></li></span>';
-        } // end foreach 
-    echo '</ul></div></ul></div>';
+            echo '</ul>';
+        }
+    echo '</li></ul></div>';
 	}
 }?>
 <script>

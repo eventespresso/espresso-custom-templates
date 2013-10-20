@@ -41,41 +41,53 @@
   margin:            0;
 }
 #espresso_accordion h3.event-title {
+  clear:             none;
   font-size:         1.2em;
   font-weight:       400;
   margin:            0;
-  padding-top:       10px;
+  padding:           10px 0 10px 0;
+}
+#espresso_accordion img.ee-event-thumb{
+  float:             right;
+  width:             72px;
+  max-width:         72px;
+  height:            auto;
+  margin:            10px;
 }
 #espresso_accordion h4.event-date {
+  clear:             none;
   font-size:         1.1em;
   font-weight:       400;
   margin:            0;
+  padding:           10px 0;
 }
 #espresso_accordion p.event-cost,
 #espresso_accordion p.event-status {
   font-size:         1em;
   margin:            0;
+  padding:           0 0 10px 0;
 }
 #espresso_accordion p.event-status{
-  box-sizing:        content-box !important;
   border:            1px solid #ccc;
   font-size:         .8em;
-  padding:           5px 10px;
+  padding:           5px 10px 30px 10px;
   color:             #777;
   margin:            .5em 0 1em 10px;
   position:          relative;
   display:           inline-block;
   overflow:          hidden;
-  height:            1.9em;
-  line-height:       1.9em;
+  height:            2em;
+  line-height:       2;
   white-space:       nowrap;
   cursor:            pointer;
 }
 #espresso_accordion h3.event-title,
 #espresso_accordion h4.event-date,
-#espresso_accordion p.event-cost,
-#espresso_accordion p.event-status {
-    padding-left:     10px;
+#espresso_accordion p.event-cost {
+  padding-left:       10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing:    border-box;
+  box-sizing:         border-box;
 }
 #espresso_accordion > ul > li > a:hover {
   text-decoration:    none;
@@ -99,7 +111,7 @@
 }
 #espresso_accordion ul ul li {
   padding:            0;
-  border-top:         1px solid #d4d4d4;
+  border-top:         1px solid #eaeaea;
   border-right:       1px solid #eaeaea;
   background:         #f7f7f7;
 }
@@ -111,4 +123,12 @@
 }
 #espresso_accordion ul ul a:hover {
   color:            #e94f31;
+}
+#espresso_accordion a:active {
+  outline:            none;
+  -moz-outline-style: none;
+}
+#espresso_accordion a:focus {
+  outline:            none;
+  -moz-outline-style: none;
 }
