@@ -3,82 +3,112 @@
 #espresso_accordion ul,
 #espresso_accordion li,
 #espresso_accordion a {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-  font-weight: normal;
-  text-decoration: none;
-  font-family: inherit;
-  position: relative;
-  display: block;
+  margin:           0;
+  padding:          0;
+  border:           0;
+  list-style:       none;
+  font-weight:      normal;
+  text-decoration:  none;
+  font-family:      inherit;
+  position:         relative;
+  display:          block;
 }
 #espresso_accordion {
-  width: 97%;
+  width:            400px;
+}
+#espresso_accordion ul.espress-category-accordion {
+  border-top:       1px solid #efefef;
 }
 #espresso_accordion a {
-  line-height: 2;
+  line-height:      2;
 }
 #espresso_accordion > ul > li {
-   background: #fcfcfc;
-  border-bottom: 1px solid #efefef;
-  border-right: 1px solid #ddd;
+  background:       #fcfcfc;
   }
 #espresso_accordion > ul > li:hover {
-  background: #f3f3f3;
+  background:       #f3f3f3;
  }
 #espresso_accordion > ul > li > a {
-  display: block;
+  display:          block;
 }
-#espresso_accordion h4 {
-	font-weight: 400;
-	font-size: 1.3em;
-	display: block;
-  	padding: 12px 10px;
-  	margin: 0;
+#espresso_accordion h2.ee-category {
+	font-weight:       400;
+	font-size:         1.4em;
+  border-bottom:     1px solid #efefef;
+  border-right:      1px solid #efefef;
+	display:           block;
+  padding:           12px 10px;
+  margin:            0;
+}
+#espresso_accordion h3.event-title {
+  font-size:         1.2em;
+  font-weight:       400;
+  margin:            0;
+  padding-top:       10px;
+}
+#espresso_accordion h4.event-date {
+  font-size:         1.1em;
+  font-weight:       400;
+  margin:            0;
+}
+#espresso_accordion p.event-cost,
+#espresso_accordion p.event-status {
+  font-size:         1em;
+  margin:            0;
+}
+#espresso_accordion p.event-status{
+  box-sizing:        content-box !important;
+  border:            1px solid #ccc;
+  font-size:         .8em;
+  padding:           5px 10px;
+  color:             #777;
+  margin:            .5em 0 1em 10px;
+  position:          relative;
+  display:           inline-block;
+  overflow:          hidden;
+  height:            1.9em;
+  line-height:       1.9em;
+  white-space:       nowrap;
+  cursor:            pointer;
+}
+#espresso_accordion h3.event-title,
+#espresso_accordion h4.event-date,
+#espresso_accordion p.event-cost,
+#espresso_accordion p.event-status {
+    padding-left:     10px;
 }
 #espresso_accordion > ul > li > a:hover {
-  text-decoration: none;
+  text-decoration:    none;
 }
 #espresso_accordion > ul > li.active {
-  border-bottom:  1px solid #ddd;
+  border-bottom:      1px solid #ddd;
 }
-#espresso_accordion > ul > li.active h4.ee_category {
-	border-bottom:  1px solid #ddd;
+#espresso_accordion > ul > li.active h2.ee-category {
+	border-bottom:      none;
 }
-#espresso_accordion > ul > li.has-sub > a span {
-  background: url(icon_plus.png) 96% center no-repeat;
+#espresso_accordion > ul > li.has-sub > a {
+  background:         url(../images/icon_plus.png) 96% center no-repeat;
 }
-#espresso_accordion > ul > li.has-sub.active > a span {
-  background: url(icon_minus.png) 96% center no-repeat;
+#espresso_accordion > ul > li.has-sub.active > a {
+  background:         url(../images/icon_minus.png) 96% center no-repeat;
 }
 /* Sub menu */
 #espresso_accordion ul ul {
-  display: none;
-  background: #fff;
+  display:            none;
+  background:         #fff;
 }
 #espresso_accordion ul ul li {
-  padding: 0;
-  border-bottom: 1px solid #d4d4d4;
-  border-top: none;
-  background: #f7f7f7;
-}
-#espresso_accordion ul ul li:last-child {
-  border-bottom: none;
+  padding:            0;
+  border-top:         1px solid #d4d4d4;
+  border-right:       1px solid #eaeaea;
+  background:         #f7f7f7;
 }
 #espresso_accordion ul ul a {
-  padding: 10px 10px 10px 25px;
-  display: block;
-  color: #676767;
-  font-size: 12px;
-  font-weight: normal;
-}
-#espresso_accordion ul ul a:before {
-  content: '»';
-  position: absolute;
-  left: 10px;
-  color: #e94f31;
+  padding:           0;
+  display:           block;
+  color:             #676767;
+  font-weight:       normal;
 }
 #espresso_accordion ul ul a:hover {
-  color: #e94f31;
+  color:            #e94f31;
 }

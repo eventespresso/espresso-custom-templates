@@ -33,7 +33,7 @@ if (!function_exists('espresso_category_accordion')) {
 		$css_file = isset($css_file) && !empty($css_file) ? $css_file : 'style';
 
 		//Register styles
-		wp_register_style( 'espresso_category_accordion', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'templates/category-accordion/'.$css_file.'.css' );
+		wp_register_style( 'espresso_category_accordion', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'templates/category-accordion/'. $css_file .'.css' );
 		wp_enqueue_style( 'espresso_category_accordion');
 
 
@@ -41,8 +41,6 @@ if (!function_exists('espresso_category_accordion')) {
 		$categories = $wpdb->get_results(
 			"SELECT * FROM wp_events_category_detail"
 			);
-
-		//$temp_cats = $wpdb->get_results($categories);
 
 		$exclude = isset($ee_attributes['exclude']) && !empty($ee_attributes['exclude']) ? explode(',', $ee_attributes['exclude']) : false;
 
@@ -60,24 +58,25 @@ if (!function_exists('espresso_category_accordion')) {
 		if (function_exists('event_espresso_multi_reg_init')) {
 			$multi_reg = true;
 		}
-		echo '<div id="espresso_accordion"><ul>';
+		echo '<div id="espresso_accordion"><ul class="espress-category-accordion">';
 
 				foreach ($categories as $category) {
     			$catcode = $category->id;
     			$catmeta = unserialize($category->category_meta);
     			$bg = $catmeta['event_background'];
+    			$fontcolor = $catmeta['event_text_color'];
     			$use_bg = $catmeta['use_pickers'];
 
 				if($use_bg == "Y") {
-					echo '<li style="border-left: 10px solid ' . $bg . '";><a href="#">';
+					echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . '";><a href="#">';
 				} else {
 					continue; 
 				}
 		
-            echo '<h4 class="ee_category" style="color:' .$bg . '">';
+            echo '<h2 class="ee-category" style="color:' . $bg . '">';
             echo $category->category_name;
-            echo '</h4></a>';
-            echo '<ul></li><li>';
+            echo '</h2></a>';
+            echo '<ul></li>';
 
             foreach ($events as $event){
 
@@ -97,6 +96,8 @@ if (!function_exists('espresso_category_accordion')) {
 					$registration_url = espresso_reg_url($event->overflow_event_id);
 				}
 
+				$event_name = stripslashes_deep($event->event_name);
+
             	$arr=explode(",",$event->category_id);
             	foreach ($arr as $a) {
 	            	if ($a == $catcode) {
@@ -106,13 +107,12 @@ if (!function_exists('espresso_category_accordion')) {
 						$the_status = __('Join Waiting List');
 						$registration_url = espresso_reg_url($event->overflow_event_id);
 					}
-	                echo '<a class="a_event_title" id="a_event_title-' . $event->id . '" href="' . $registration_url . '"' . stripslashes_deep($event->event_name) . '<span class="event_status">';
-	                echo $org_options['currency_symbol'].$event->event_cost; 
-	                echo '<br>';
-	                echo $the_status;
-	                echo '</span><br />';
-	                echo event_date_display($event->start_date, 'M j, Y');
-	                echo '</a></li>';
+	                echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</h3>';
+	                echo '<h4 class="event-date">' . event_date_display($event->start_date, 'M j, Y') . '</h4>';
+	                echo '<p class="event-cost">' . $org_options['currency_symbol'];
+	                echo $event->event_cost . '</p>'; 
+	                echo '<p class="event-status">' . $the_status . '</p>';
+	                echo '</li>';
 	            	}
             	}
             }
