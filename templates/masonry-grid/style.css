@@ -25,7 +25,8 @@
 	color: 			#555;
 }
 #espresso_masonry .ee_masonry.masonry-brick p.event-cost,
-#espresso_masonry .ee_masonry.masonry-brick p.event-date{
+#espresso_masonry .ee_masonry.masonry-brick p.event-date,
+#espresso_masonry .ee_masonry.masonry-brick p.event_desc{
 	margin: 		0 10px 5px 10px;
 	color: 			#777;
 }

@@ -61,8 +61,12 @@ if (!function_exists('espresso_masonry_grid')) {
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-				$registration_url 	= espresso_reg_url($event->overflow_event_id);
-				$event_status 		= __('Sold Out - Join Waiting List', 'event_espresso');
+				$registration_url	= espresso_reg_url($event->overflow_event_id);
+				$event_status		= __('Sold Out - Join Waiting List', 'event_espresso');
+			}
+			
+			if ( function_exists('espresso_members_installed') && espresso_members_installed() == true && !is_user_logged_in() && ($member_only == 'Y' || $member_options['member_only_all'] == 'Y') ){
+				$event_status 		= __('Member Only', 'event_espresso'); 
 			}
 
 			//Gets the member options, if the Members add-on is installed.
@@ -77,26 +81,14 @@ if (!function_exists('espresso_masonry_grid')) {
 			echo '<div class="ee_masonry">';
 			echo '<a id="a_register_link-' . $event->id . '" href="' . $registration_url . '" class="darken">';
             echo '<img src="' . $image . '" /><h2>';
-
-			if ( function_exists('espresso_members_installed') && espresso_members_installed() == true && !is_user_logged_in() && ($member_only == 'Y' || $member_options['member_only_all'] == 'Y') ){
-				echo __('Member Only', 'event_espresso'); 
-
-			} else {
-				echo stripslashes($event->event_name);
-				echo '</a></h2>';
-				echo '<p class="event_desc">'.$event->event_desc.'</p>';
-				echo '<p class="event-cost">Cost: ';
-				if($event->event_cost === "0.00") {
-					echo __('FREE', 'event_espresso');
-				} else {
-					echo $org_options['currency_symbol'] . $event->event_cost;
-					echo '</p>';
-				}
-				echo '<p class="event-date">';
-				echo date($date_format, strtotime($event->start_date));
-				echo '</p>';
-				echo '<p class="event-status"><a id="register_link-' . $event->id . '" href="' . $registration_url . '" class="button darken">' . $event_status. '</a></p>';
-			}
+			echo stripslashes($event->event_name);
+			echo '</a></h2>';
+			echo !empty($event->event_desc) ? '<p class="event_desc">'.$event->event_desc.'</p>' : '';
+			echo '<p class="event-cost">Cost: ';
+			echo $event->event_cost === "0.00" ? __('FREE', 'event_espresso') : $org_options['currency_symbol'] . $event->event_cost;
+			echo '</p>';
+			echo '<p class="event-date">'.date($date_format, strtotime($event->start_date)).'</p>';
+			echo '<p class="event-status"><a id="register_link-' . $event->id . '" href="' . $registration_url . '" class="button darken">' . $event_status. '</a></p>';
 			echo '</div>';
 		}
 
