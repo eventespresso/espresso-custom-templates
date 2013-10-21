@@ -81,35 +81,37 @@ if (!function_exists('espresso_category_accordion')) {
             echo '<ul><li>';
 
             foreach ($events as $event){
-
-
-            	$upload_dir = wp_upload_dir();
-            	$event_meta = unserialize($event->event_meta);
-            	$pathinfo = pathinfo( $event_meta['event_thumbnail_url'] );
-            	$dirname = $pathinfo['dirname'] . '/';
-            	$filename = $pathinfo['filename'];
-            	$ext = $pathinfo['extension'];
-            	$path_to_thumbnail = $dirname . $filename . '.' . $ext;
-
-            	if ( $pathinfo['dirname'] == $upload_dir['baseurl'] ) {
-					if ( ! file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext )) {
-						$path_to_thumbnail = file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext ) ? $event_meta['event_thumbnail_url'] : FALSE;
+				$path_to_thumbnail = '';
+				$filename = '';
+				$event_meta = unserialize($event->event_meta);
+            	if (!empty($event_meta['event_thumbnail_url'])){
+					$upload_dir = wp_upload_dir();
+					$pathinfo = pathinfo( $event_meta['event_thumbnail_url'] );
+					$dirname = $pathinfo['dirname'] . '/';
+					$filename = $pathinfo['filename'];
+					$ext = $pathinfo['extension'];
+					$path_to_thumbnail = $dirname . $filename . '.' . $ext;
+	
+					if ( $pathinfo['dirname'] == $upload_dir['baseurl'] ) {
+						if ( ! file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext )) {
+							$path_to_thumbnail = file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext ) ? $event_meta['event_thumbnail_url'] : FALSE;
+						}
 					}
-			}
+				}
 				
 				//lets check the staus and attendee count
 				$open_spots	= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
 
 				if($open_spots < 1) {
-					$the_status = __('Sold Out.');
+					$the_status = __('Sold Out.', 'event_espresso');
 				} elseif (event_espresso_get_status($event->id) == 'NOT_ACTIVE') {
-					$the_status = __('Closed.');
+					$the_status = __('Closed.', 'event_espresso');
 				} else {
-					$the_status = 'Register Now!';
+					$the_status = __('Register Now!', 'event_espresso');
 				}
 
 				if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-					$the_status = __('Join Waiting List');
+					$the_status = __('Join Waiting List', 'event_espresso');
 					$registration_url = espresso_reg_url($event->overflow_event_id);
 				}
 
@@ -121,11 +123,11 @@ if (!function_exists('espresso_category_accordion')) {
 	                $externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 	                
 	                if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-						$the_status = __('Join Waiting List');
+						$the_status = __('Join Waiting List', 'event_espresso');
 						$registration_url = espresso_reg_url($event->overflow_event_id);
 					}
 	                echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
-	                echo '<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />';
+	                echo !empty($filename)?'<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />':'';
 	                echo '<h4 class="event-date">' . event_date_display($event->start_date, 'M j, Y') . '</h4>';
 	                echo '<p class="event-cost">' . $org_options['currency_symbol'];
 	                echo $event->event_cost . '</p>'; 
