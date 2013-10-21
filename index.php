@@ -182,11 +182,17 @@ function espresso_custom_template_display($attributes){
 	if ( empty( $path ) ) {
 		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php')) {
 			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php';
-		}else{
+		} elseif (file_exists(dirname(__FILE__) . '/templates/'.$template_name.'/index.php')) {
 			$path = 'templates/'.$template_name.'/index.php';
+		} else {
+			$path = '';
 		}
 	}
-	include_once( $path );
+	if( !empty($path) ){
+		include_once( $path );
+	} else {
+		echo "The custom template {$template_name} can not be found";
+	}
 
 	//Create an action using the template name
 	do_action('action_hook_espresso_custom_template_'.$template_name);
