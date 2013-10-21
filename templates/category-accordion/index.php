@@ -4,8 +4,8 @@
  * @package    	Custom Template Display
  * @subpackage 	Category Accordion
  * @since      
- * @author     	Seth Shoultes <seth@eventespresso.com>
- * @copyright  	Copyright (c) 2013, Seth Shoultes
+ * @author     	Event Espresso <support@eventespresso.com>
+ * @copyright  	Copyright (c) 2013, Event Espresso
  * @link       	http://eventespresso.com
  * @license    	http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
