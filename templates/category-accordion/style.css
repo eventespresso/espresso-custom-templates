@@ -1,126 +1,134 @@
-ul{
-  padding-left:0;
-}
 
-#espresso-select {
-	font-family: 'Open Sans', sans-serif;
-	margin:0;
-	padding:0;
-	list-style:none;
-	/* Clear floats */
-	float:left;
-	width:100%;
-	position:relative;
-	z-index:5;
-	height:auto; /* change this to 47px if you do NOT want the content pushed down when menu activ */
-	line-height:1.9;
+#espresso_accordion,
+#espresso_accordion ul,
+#espresso_accordion li,
+#espresso_accordion a {
+  margin:           0;
+  padding:          0;
+  border:           0;
+  list-style:       none;
+  font-weight:      normal;
+  text-decoration:  none;
+  font-family:      inherit;
+  position:         relative;
+  display:          block;
 }
-#espresso-select h3 {
-	font-size:24px;
-	font-weight:300;
-	margin:0;
-	padding:0 0 0 1em;
-	line-height: 1.9;
-	background-color: #fff;
-	margin-left: 25px;
+#espresso_accordion {
+  width:            400px;
 }
-ul#espresso-select,
-ul#espresso-select:hover{
-	background: -webkit-linear-gradient(90deg,  #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
-	background: -moz-linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
-	background: -o-linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
-	background: linear-gradient(90deg, #999 0%, #999 2%, #ffffff 2%, #ffffff 92%, #f5f5f5 92%, #f5f5f5 100%);
+#espresso_accordion ul.espress-category-accordion {
+  border-top:       1px solid #efefef;
 }
-#espresso-select li{
-	display:block;
-	position:relative;
-	margin: 0;
-	border-bottom: #eee thin solid;
+#espresso_accordion a {
+  line-height:      2;
 }
-/*
-#espresso-select li:first-child{
-	border-top: 1px solid #d9d9d9;
-  	border-bottom: 1px solid #d9d9d9;
+#espresso_accordion > ul > li {
+  background:       #fcfcfc;
   }
-  */
-#espresso-select a {
-    display:block;
-    color: #000;
-    text-decoration:none;
-    background-color: #fff;
-    padding-left: 4px;
+#espresso_accordion > ul > li:hover {
+  background:       #f3f3f3;
+ }
+#espresso_accordion > ul > li > a {
+  display:          block;
 }
-
-#espresso-select span {
-	background-color: #999;
-	display: block;
+#espresso_accordion h2.ee-category {
+	font-weight:       400;
+	font-size:         1.4em;
+  border-bottom:     1px solid #efefef;
+  border-right:      1px solid #efefef;
+	display:           block;
+  padding:           12px 10px;
+  margin:            0;
 }
-
-#espresso-select a:hover{
-    color: #333;
-    text-decoration:none;
+#espresso_accordion h3.event-title {
+  clear:             none;
+  font-size:         1.2em;
+  font-weight:       400;
+  margin:            0;
+  padding:           10px 0 10px 0;
 }
-/*--- DROPDOWN ---*/
-#espresso-select ul{
-    background:#fff;
-    list-style:none;
-    width:100%;
+#espresso_accordion img.ee-event-thumb{
+  float:             right;
+  width:             72px;
+  max-width:         72px;
+  height:            auto;
+  margin:            10px;
 }
-#espresso-select ul li{
-	font-size:16px;
-    padding-top:0;
-    float:none;
-    display:block;
-    border-top:none;
-    /*border-bottom: 1px solid #d9d9d9;*/
+#espresso_accordion h4.event-date {
+  clear:             none;
+  font-size:         1.1em;
+  font-weight:       400;
+  margin:            0;
+  padding:           10px 0;
 }
-#espresso-select ul a{
-	white-space:nowrap;
+#espresso_accordion p.event-cost,
+#espresso_accordion p.event-status {
+  font-size:         1em;
+  margin:            0;
+  padding:           0 0 10px 0;
 }
-#espresso-select ul li a {
-	padding:.5em 1em;
+#espresso_accordion p.event-status{
+  border:            1px solid #ccc;
+  font-size:         .8em;
+  padding:           5px 10px 30px 10px;
+  color:             #777;
+  margin:            .5em 0 1em 10px;
+  position:          relative;
+  display:           inline-block;
+  overflow:          hidden;
+  height:            2em;
+  line-height:       2;
+  white-space:       nowrap;
+  cursor:            pointer;
 }
-.dd_js li ul {
-	display:none;
+#espresso_accordion h3.event-title,
+#espresso_accordion h4.event-date,
+#espresso_accordion p.event-cost {
+  padding-left:       10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing:    border-box;
+  box-sizing:         border-box;
 }
-.dd_js li:hover ul {
-    display:block;
+#espresso_accordion > ul > li > a:hover {
+  text-decoration:    none;
 }
-#espresso-select li:hover a {
-    text-decoration:none;
+#espresso_accordion > ul > li.active {
+  border-bottom:      1px solid #ddd;
 }
-#espresso-select li:hover ul a{
-	text-decoration:none;
+#espresso_accordion > ul > li.active h2.ee-category {
+	border-bottom:      none;
 }
-#espresso-select li:hover ul li a:hover{
-	/*color:#996b42;*/
+#espresso_accordion > ul > li.has-sub > a {
+  background:         url(../images/icon_plus.png) 96% center no-repeat;
 }
-#espresso-select ul a{
-	white-space:nowrap;
+#espresso_accordion > ul > li.has-sub.active > a {
+  background:         url(../images/icon_minus.png) 96% center no-repeat;
 }
-#espresso-select li:hover a{
-	text-decoration:none;
+/* Sub menu */
+#espresso_accordion ul ul {
+  display:            none;
+  background:         #fff;
 }
-#espresso-select li:hover ul li a:hover,
-#espresso-select span.event_status:hover {
-    background:#f7f7f7;
+#espresso_accordion ul ul li {
+  padding:            0;
+  border-top:         1px solid #eaeaea;
+  border-right:       1px solid #eaeaea;
+  background:         #f7f7f7;
 }
-i.icon-chevron-sign-down{
-	display:block;
-	position:absolute;
-	right:2%;
-	top:0;
-	font-size:18px;
-	line-height:2;
-	margin-top:5px;
-	padding:0;
-	color: #999;
-	text-shadow:0 1px 0 #47322d;
+#espresso_accordion ul ul a {
+  padding:           0;
+  display:           block;
+  color:             #676767;
+  font-weight:       normal;
 }
-
-
-#espresso-select span.event_status {
-	float:right;
-	background-color: transparent;
-	text-align: right;
+#espresso_accordion ul ul a:hover {
+  color:            #e94f31;
+}
+#espresso_accordion a:active {
+  outline:            none;
+  -moz-outline-style: none;
+}
+#espresso_accordion a:focus {
+  outline:            none;
+  -moz-outline-style: none;
 }
