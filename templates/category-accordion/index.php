@@ -75,7 +75,7 @@ if (!function_exists('espresso_category_accordion')) {
 					continue; 
 				}
 		
-            echo '<h2 class="ee-category" style="color:' . $bg . '">';
+            echo '<h2 class="ee-category">';
             echo $category->category_name;
             echo '</h2></a>';
             echo '<ul><li>';

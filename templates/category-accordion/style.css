@@ -65,21 +65,22 @@
 #espresso_accordion p.event-status {
   font-size:         1em;
   margin:            0;
-  padding:           0 0 10px 0;
+  padding:           0;
 }
 #espresso_accordion p.event-status{
-  border:            1px solid #ccc;
-  font-size:         .8em;
-  padding:           5px 10px 30px 10px;
-  color:             #777;
-  margin:            .5em 0 1em 10px;
-  position:          relative;
-  display:           inline-block;
-  overflow:          hidden;
-  height:            2em;
-  line-height:       2;
-  white-space:       nowrap;
-  cursor:            pointer;
+  width:              auto;
+  background:         #fff;
+  border:             1px solid #ddd;
+  color:              #777;
+  cursor:             pointer;
+  display:            inline-block;
+  font-weight:        bold;
+  line-height:        1;
+  padding:            10px 20px;
+  position:           relative;
+  text-align:         center;
+  text-decoration:    none;
+  margin:             10px;
 }
 #espresso_accordion h3.event-title,
 #espresso_accordion h4.event-date,
