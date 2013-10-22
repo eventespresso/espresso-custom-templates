@@ -41,6 +41,10 @@
 	opacity:0;
 }
 
+.ee_grid_box a.darken span h2 {
+	font-size:130%;
+}
+
 .ee_grid_box a.darken:hover span{
 	color:#fff;
     -webkit-transition: all 0.5s linear;

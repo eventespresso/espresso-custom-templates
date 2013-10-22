@@ -35,7 +35,7 @@ function espresso_custom_template_grid(){
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
 			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
-			$event_status 		= 'Register Now!';
+			$event_status 		= __('Register Now!', 'event_espresso');
 
 			//use the wordpress date format.
 			$date_format = get_option('date_format');
@@ -44,12 +44,12 @@ function espresso_custom_template_grid(){
 			$att_num = get_number_of_attendees_reg_limit($event->id, 'num_attendees');
 			//Uncomment the below line to hide an event if it is maxed out
 			//if ( $att_num >= $event->reg_limit  ) { continue; $live_button = 'Closed';  }
-			if ( $att_num >= $event->reg_limit ) { $event_status = 'Sold Out';  } elseif ( event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';}
+			if ( $att_num >= $event->reg_limit ) { $event_status = __('Sold Out', 'event_espresso');  } elseif ( event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $event_status = 'Closed';}
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
 				$registration_url 	= espresso_reg_url($event->overflow_event_id);
-				$event_status 		= 'Sold Out - Join Waiting List';
+				$event_status 		= __('Sold Out - Join Waiting List', 'event_espresso');
 			}
 
 			//Gets the member options, if the Members add-on is installed.
@@ -72,11 +72,11 @@ function espresso_custom_template_grid(){
                         <span>
 
                             <?php if ( function_exists('espresso_members_installed') && espresso_members_installed() == true && !is_user_logged_in() && ($member_only == 'Y' || $member_options['member_only_all'] == 'Y') ) {
-                            echo "Member Only"; } else { ?>
+                            echo __('Member Only', 'event_espresso'); } else { ?>
 
                             <?php echo stripslashes($event->event_name); ?><br />
 
-                            <?php if($event->event_cost === "0.00") { echo "FREE"; } else { echo $org_options['currency_symbol'] . $event->event_cost;  } ?><br />
+                            <?php if($event->event_cost === "0.00") { echo __('FREE', 'event_espresso'); } else { echo $org_options['currency_symbol'] . $event->event_cost;  } ?><br />
 
                             <?php echo date($date_format, strtotime($event->start_date)) ?><br />
 
