@@ -22,17 +22,11 @@ function espresso_custom_template_grid(){
 	if(isset($ee_attributes['columnwidth'])) { $columnwidth = $ee_attributes['columnwidth']; } //for masonrygrid
 	if(isset($ee_attributes['default_image'])) { $default_image = $ee_attributes['default_image']; } //for masonrygrid
 
-	if(isset($masonry) && $masonry == 'true') {
-		wp_enqueue_script( 'jquery-masonry');
-		wp_register_style( 'espresso_custom_template_grid_masonry_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style_masonry.css" );
-		wp_enqueue_style( 'espresso_custom_template_grid_masonry_css');
-	}
-	else {
 		//Load the css file
 		wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
 		wp_enqueue_style( 'espresso_custom_template_grid');
 		$columnwidth = '';
-	}
+
 
 	//Uncomment to view the data being passed to this file
 	//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';
@@ -108,15 +102,3 @@ function espresso_custom_template_grid(){
 	</div>
 
 <?php } ?>
-
-
-
-<script>
-jQuery( document ).ready( function( $ ) {
-    $( '#mainwrapper' ).masonry( {
-    	columnWidth: 60,
-    	itemSelector: '.ee_grid_box',
-        isAnimated: true
-    } );
-} );
-</script>
