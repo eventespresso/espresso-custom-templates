@@ -5,9 +5,6 @@
 //Requirements: CSS skills to customize styles, HTML/PHP to restructure.
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "grid",
 
-//Parameter: masonry=true - this will activate the jQuery Masonry plugin
-//Parameter: columnwidth="200"  -this will set the column width in pixels. Will only work if masonry=ture is also set.
-
 // IMPORTANT you may need to tweak the box or title sizes if your events have long titles.
 
 
@@ -17,10 +14,6 @@ function espresso_custom_template_grid(){
 
 	//Defaults
 	global $org_options, $this_event_id, $events, $ee_attributes;
-
-	if(isset($ee_attributes['masonry'])) { $masonry = $ee_attributes['masonry']; }
-	if(isset($ee_attributes['columnwidth'])) { $columnwidth = $ee_attributes['columnwidth']; } //for masonrygrid
-	if(isset($ee_attributes['default_image'])) { $default_image = $ee_attributes['default_image']; } //for masonrygrid
 
 		//Load the css file
 		wp_register_style( 'espresso_custom_template_grid', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/grid/style.css" );
@@ -32,7 +25,7 @@ function espresso_custom_template_grid(){
 	//echo '<h4>$events : <pre>' . print_r($events,true) . '</pre> <span style="font-size:10px;font-weight:normal;">' . __FILE__ . '<br />line no: ' . __LINE__ . '</span></h4>';
 
 	?>
-	<div id="mainwrapper" class=" masonry js-masonry">
+	<div id="mainwrapper" class="espresso-grid">
 
 		<?php
 		foreach ($events as $event){
