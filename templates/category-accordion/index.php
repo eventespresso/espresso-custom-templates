@@ -62,18 +62,18 @@ if (!function_exists('espresso_category_accordion')) {
 		}
 		echo '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
 
-				foreach ($categories as $category) {
-    			$catcode = $category->id;
-    			$catmeta = unserialize($category->category_meta);
-    			$bg = $catmeta['event_background'];
-    			$fontcolor = $catmeta['event_text_color'];
-    			$use_bg = $catmeta['use_pickers'];
+		foreach ($categories as $category) {
+    		$catcode = $category->id;
+    		$catmeta = unserialize($category->category_meta);
+    		$bg = $catmeta['event_background'];
+    		$fontcolor = $catmeta['event_text_color'];
+   			$use_bg = $catmeta['use_pickers'];
 
-				if($use_bg == "Y") {
-					echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . '";><a href="#">';
-				} else {
-					continue; 
-				}
+			if($use_bg == "Y") {
+				echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . '";><a href="#">';
+			} else {
+				echo '<li class="has-sub" style="border-left: 10px solid #CCC";><a href="#">';
+			}
 		
             echo '<h2 class="ee-category">';
             echo $category->category_name;
