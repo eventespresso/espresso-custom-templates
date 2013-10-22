@@ -49,7 +49,7 @@ wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/
 <div id="ee_date_range_wrapper">
 
 <?php
-if($user_select != 'false') { ?>
+if(isset($user_select) && $user_select != 'false') { ?>
 	<form action="" method="POST" id="ee_daterange_datepickers">
 	<input class="datepicker" id="ee_date_from" type="text" placeholder="<?php echo _e('Start Date','event_espresso'); ?>" name="ee_date_from">
 	<input class="datepicker" id="ee_date_to" type="text" placeholder="<?php echo _e('End Date','event_espresso'); ?>" name="ee_date_to">
