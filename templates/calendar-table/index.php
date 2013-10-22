@@ -1,16 +1,16 @@
 <?php
-//Template: Calendar Table Display
+//Template: Calendar Table
 //Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days.
-//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="default" max_days="30" category_identifier="concerts"].
+//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="calendar-table" max_days="30" category_identifier="concerts"].
 //Requirements: CSS skills to customize styles, some renaming of the table columns, Espresso WP User Add-on (optional)
 
 // Parameter: show_featured=true/false. If set to true, the dates will be replaced with the featured images.
 // Parameter: change_title="something". If set the Band/Artist default title will be change to the strng provided.
 
-//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default",
-add_action('action_hook_espresso_custom_template_default','espresso_custom_template_default');
+//The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "calendar-table",
+add_action('action_hook_espresso_custom_template_calendar-table','espresso_custom_template_calendar_table');
 
-function espresso_custom_template_default(){
+function espresso_custom_template_calendar_table(){
 
 	global $org_options, $this_event_id, $events, $ee_attributes;
 
@@ -22,7 +22,7 @@ function espresso_custom_template_default(){
 	if(isset($ee_attributes['change_title'])) { $change_title = $ee_attributes['change_title']; }
 
 	//Load the css file
-	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/default/style.css" );
+	wp_register_style( 'espresso_cal_table_css', ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH."/templates/calendar-table/style.css" );
 	wp_enqueue_style( 'espresso_cal_table_css');
 
 	//Clears the month name
@@ -44,16 +44,16 @@ function espresso_custom_template_default(){
 			$event_meta			= unserialize($event->event_meta);
 			$externalURL 		= $event->externalURL;
 			$registration_url 	= !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
-			$live_button 		= '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/register-now.png" alt="Buy Tickets"></a>';
+			$live_button 		= '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/calendar-table/register-now.png" alt="Buy Tickets"></a>';
 			$open_spots 		= apply_filters('filter_hook_espresso_get_num_available_spaces', $event->id);
 			$featured_image		= isset($event_meta['event_thumbnail_url']) ? $event_meta['event_thumbnail_url'] : FALSE;
 
 			//This line changes the button text to display "Closed" if the attendee limit is reached.
-			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/closed.png" alt="Buy Tickets">';  }
+			if ( $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ) { $live_button = '<img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/calendar-table/closed.png" alt="Buy Tickets">';  }
 
 			//waitlist
 			if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/default/waiting.png" alt="Join Waiting List"></a>';
+				$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'"><img class="buytix_button" src="'.ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH.'/templates/calendar-table/waiting.png" alt="Join Waiting List"></a>';
 			}
 
 			//Build the table headers
