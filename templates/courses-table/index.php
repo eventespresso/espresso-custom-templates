@@ -27,11 +27,9 @@ function espresso_custom_template_courses_table(){
       <thead class="espresso-table-header-row">
       <tr>
           <th class="th-group"><?php _e('Course','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('Location','event_espresso'); ?></th>
           <th class="th-group"><?php _e('City','event_espresso'); ?></th>
           <th class="th-group"><?php _e('State','event_espresso'); ?></th>
           <th class="th-group"><?php _e('Date','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('Time','event_espresso'); ?></th>
           <th class="th-group"><?php _e('','event_espresso'); ?></th>
      </tr>
       </thead>
@@ -83,25 +81,18 @@ function espresso_custom_template_courses_table(){
 
 	   ?>
       <tr class="espresso-table-row">
-       	<td class="td-group">
+       <td id="event_title-<?php echo $event->id?>" class="event_title">
             <?php echo stripslashes_deep($event->event_name) ?>
           </td>
-          <td class="td-group">
-            <?php echo $event->venue_address ?>
-          </td>
-          <td class="td-group">
+           <td id="venue_city-<?php echo $event->id?>" class="venue_city">
             <?php echo $event->venue_city ?>
           </td>
-      	  <td class="td-group">
+      	  <td id="venue_state-<?php echo $event->id?>" class="venue_state">
             <?php echo $event->venue_state ?>
           </td>
-          <td class="td-group">
-              <?php echo event_date_display($event->start_date, $format = 'l, M d, Y') ?>
+          <td id="start_date-<?php echo $event->id?>" class="start_date">
+              <?php echo event_date_display($event->start_date, get_option('date_format')) ?> <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?>
           </td>
-          <td class="td-group">
-              <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?>
-          </td>
-
           <td class="td-group">
               <?php echo event_espresso_get_status($event->id) == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?>
           </td>

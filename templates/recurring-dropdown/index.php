@@ -29,7 +29,7 @@ if (!function_exists('espresso_recurring_dropdown')) {
 
 	?>
 
-<table>
+<table width="100%">
 	<tr>
 		<th><?php _e('Event Name', 'event_espresso') ?></th>
 		<th><?php _e('Venue', 'event_espresso') ?></th>
