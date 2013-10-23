@@ -176,22 +176,24 @@ function espresso_custom_template_display($attributes){
 
 	//Get the results of the query
 	$events = $wpdb->get_results($sql);
-
-	//Locate the template file
-	$path = locate_template( $template_name.'/index.php' );
-	if ( empty( $path ) ) {
-		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php')) {
-			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php';
-		} elseif (file_exists(dirname(__FILE__) . '/templates/'.$template_name.'/index.php')) {
-			$path = 'templates/'.$template_name.'/index.php';
-		} else {
-			$path = '';
+	
+	if (!has_action( 'action_hook_espresso_custom_template_'.$template_name )){
+		//Locate the template file
+		$path = locate_template( $template_name.'/index.php' );
+		if ( empty( $path ) ) {
+			if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php')) {
+				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/index.php';
+			} elseif (file_exists(dirname(__FILE__) . '/templates/'.$template_name.'/index.php')) {
+				$path = 'templates/'.$template_name.'/index.php';
+			} else {
+				$path = '';
+			}
 		}
-	}
-	if( !empty($path) ){
-		include_once( $path );
-	} else {
-		echo "The custom template {$template_name} can not be found";
+		if( !empty($path) ){
+			include_once( $path );
+		} else {
+			echo "The custom template {$template_name} can not be found";
+		}
 	}
 
 	//Create an action using the template name
