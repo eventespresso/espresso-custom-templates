@@ -11,14 +11,6 @@ function espresso_custom_template_events_table(){
 
 	global $this_event_id, $events, $wpdb;
 
-	//Check for Multi Event Registration
-	$multi_reg = false;
-	if (function_exists('event_espresso_multi_reg_init')) {
-		$multi_reg = true;
-	}
-
-	$cart_link 	= '';
-
 	$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;
 	$temp_cats = $wpdb->get_results($sql);
 
@@ -56,16 +48,14 @@ function espresso_custom_template_events_table(){
 		$live_button = '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
 		$event_status = event_espresso_get_status($event->id);
 		
-		if($open_spots < 1 && $event->allow_overflow == 'N') {
-			$live_button = __('Sold Out.', 'event_espresso'); 
-		} else if ($open_spots < 1 && $event->allow_overflow == 'Y'){
-			$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List', 'event_espresso').'</a>';
+		//Check for Multi Event Registration
+		$multi_reg = false;
+		if (function_exists('event_espresso_multi_reg_init')) {
+			$multi_reg = true;
 		}
+		$cart_link 	= '';
 		
-		if ($event_status == 'NOT_ACTIVE') { 
-			$live_button = __('Closed.', 'event_espresso');
-		}
-
+		//Create an add to cart link
 		if ($multi_reg && $event_status == 'ACTIVE' && empty($externalURL)) {
 			$params = array(
 				//REQUIRED, the id of the event that needs to be added to the cart
@@ -82,15 +72,17 @@ function espresso_custom_template_events_table(){
 			$cart_link = event_espresso_cart_link($params);
 		}
 		
-		if($event->allow_overflow == 'Y' && $event_status == 'ACTIVE' || $open_spots < 1 || $event_status == 'NOT_ACTIVE') {
-				$params = array(
-				'event_id' => $event->id,
-				'anchor' => __("", 'event_espresso'),
-				'event_name' => $event->event_name,
-				'separator' => __("", 'event_espresso')
-			);
-
-			$cart_link = event_espresso_cart_link($params);
+		if($open_spots < 1 && $event->allow_overflow == 'N') {
+			$live_button = __('Sold Out', 'event_espresso');
+			$cart_link = '';
+		} else if ($open_spots < 1 && $event->allow_overflow == 'Y'){
+			$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List', 'event_espresso').'</a>';
+			$cart_link = '';
+		}
+		
+		if ($event_status == 'NOT_ACTIVE') { 
+			$live_button = __('Closed', 'event_espresso');
+			$cart_link = '';
 		}
 
 	   ?>
