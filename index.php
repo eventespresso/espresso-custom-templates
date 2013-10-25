@@ -66,7 +66,7 @@ function espresso_custom_template_display($attributes){
 			'order_by'					=> '',					//Order by fields in the database, such as start_date
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
 			'user_id'					=> '',					//List events by user id
-			'template_name'				=> 'courses-table',		//Default template
+			'template_name'				=> 'events-table',		//Default template
 	);
 
 	// loop thru default atts

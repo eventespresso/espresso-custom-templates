@@ -1,14 +1,13 @@
 <?php
-
-//Template: Category Filter
-//Description: This template creates a list of events, displayed in a table. It can display events by category and/or maximum number of days.  The table has a javascript filtering system to allow the user to filter the list by category.
-//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="category-filter"]
+//Template: Event Listings Table
+//Description: This template creates a list of events, displayed in a table. It can dipsplay events by category and/or maximum number of days.
+//Shortcode Example: [EVENT_CUSTOM_VIEW template_name="events-table"]
 //Requirements: CSS skills to customize styles, some renaming of the table columns
 
 //The end of the action name (example: "action_hook_espresso_custom_template_") should match the name of the template. In this example, the last part the action name is "default",
-add_action('action_hook_espresso_custom_template_category-filter','espresso_custom_template_category_filter');
+add_action('action_hook_espresso_custom_template_events-table','espresso_custom_template_events_table');
 
-function espresso_custom_template_category_filter(){
+function espresso_custom_template_events_table(){
 
 	global $this_event_id, $events, $wpdb;
 
@@ -108,15 +107,19 @@ function espresso_custom_template_category_filter(){
 
 jQuery(document).ready(function(){
 
-		jQuery("#ee_filter_cat").change(function() {
-				var ee_filter_cat_id = jQuery("option:selected").attr('class');
-				console.log(ee_filter_cat_id);
-				jQuery("#ee_filter_table .espresso-table-row").show();
-				jQuery("#ee_filter_table .espresso-table-row").each(function() {
-											   if(!jQuery(this).hasClass(ee_filter_cat_id)) { jQuery(this).hide(); }
-											   });
-				if( ee_filter_cat_id == 'ee_filter_show_all') { jQuery("#ee_filter_table .espresso-table-row").show(); }
+	jQuery("#ee_filter_cat").change(function() {
+		var ee_filter_cat_id = jQuery("option:selected").attr('class');
+		console.log(ee_filter_cat_id);
+		jQuery("#ee_filter_table .espresso-table-row").show();
+		jQuery("#ee_filter_table .espresso-table-row").each(function() {
+			if(!jQuery(this).hasClass(ee_filter_cat_id)) {
+				jQuery(this).hide();
+			}
 		});
+		if( ee_filter_cat_id == 'ee_filter_show_all') {
+			jQuery("#ee_filter_table .espresso-table-row").show();
+		}
+	});
 
 
 });
@@ -124,3 +127,4 @@ jQuery(document).ready(function(){
 </script>
 <?php
 }
+
