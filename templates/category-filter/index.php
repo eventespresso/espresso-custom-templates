@@ -25,31 +25,26 @@ function espresso_custom_template_category_filter(){
 
 ?>
 
-
 <label><?php echo __('Filter by category ', 'event_espresso'); ?></label>
-
 <select class="" id="ee_filter_cat">
-    <option class="ee_filter_show_all"><?php echo __('Show All', 'event_espresso'); ?></option>
-    <?php
+	<option class="ee_filter_show_all"><?php echo __('Show All', 'event_espresso'); ?></option>
+	<?php
 		foreach($temp_cats as $cat) {
-			echo "<option class='cat-" . $cat->id . "'>" . $cat->category_name . "</option>";
+			echo '<option class="cat-' . $cat->id . '">'. $cat->category_name . '</option>';
 		}
     ?>
-    </select>
-
-	<table id="ee_filter_table" class="espresso-table" width="100%">
-
-      <thead class="espresso-table-header-row">
-      <tr>
-          <th class="th-group"><?php _e('Course','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('Venue','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('Date','event_espresso'); ?></th>
-          <th class="th-group"><?php _e('','event_espresso'); ?></th>
-     </tr>
-      </thead>
+</select>
+<table id="ee_filter_table" class="espresso-table" width="100%">
+	<thead class="espresso-table-header-row">
+		<tr>
+			<th class="th-group"><?php _e('Course','event_espresso'); ?></th>
+			<th class="th-group"><?php _e('Venue','event_espresso'); ?></th>
+			<th class="th-group"><?php _e('Date','event_espresso'); ?></th>
+			<th class="th-group"></th>
+		</tr>
+	</thead>
 	<tbody>
-
-      <?php
+		<?php
 
       foreach ($events as $event){
 		$button_text 		= __('Register', 'event_espresso');
@@ -62,7 +57,7 @@ function espresso_custom_template_category_filter(){
 		$live_button 		= $open_spots < 1 || event_espresso_get_status($event->id) == 'NOT_ACTIVE' ? __('Closed', 'event_espresso') : '<a id="a_register_link-'.$event->id.'" href="'.$registration_url.'">'.$button_text.'</a>';
 
 		if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-			$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List').'</a>';
+			$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List', 'event_espresso').'</a>';
 		}
 
 		if ($multi_reg && event_espresso_get_status($event->id) == 'ACTIVE' && empty($externalURL)) {
@@ -75,7 +70,7 @@ function espresso_custom_template_category_filter(){
 				// $event_name = get_event_field('event_name', EVENTS_DETAIL_TABLE, ' WHERE id = ' . $event_id);
 				'event_name' => $event->event_name,
 				//OPTIONAL, will place this term before the link
-				'separator' => __(" or ", 'event_espresso')
+				'separator' => ' '.__("or", 'event_espresso').' '
 			);
 
 			$cart_link = event_espresso_cart_link($params);
@@ -92,22 +87,14 @@ function espresso_custom_template_category_filter(){
 		}
 
 	   ?>
-      <tr class="espresso-table-row cat-<?php echo $event->category_id; ?>">
-       	<td id="event_title-<?php echo $event->id?>" class="event_title">
-            <?php echo stripslashes_deep($event->event_name) ?>
-          </td>
-          <td id="venue_title-<?php echo $event->id?>" class="venue_title">
-            <?php echo $event->venue_name ?>
-          </td>
-          <td id="start_date-<?php echo $event->id?>" class="start_date">
-              <?php echo event_date_display($event->start_date, get_option('date_format')) ?> <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?>
-          </td>
-          <td class="td-group">
-              <?php echo event_espresso_get_status($event->id) == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?>
-          </td>
-      </tr>
-      <?php } //close foreach ?>
-</tbody>
+		<tr class="espresso-table-row cat-<?php echo $event->category_id; ?>">
+			<td id="event_title-<?php echo $event->id?>" class="event_title"><?php echo stripslashes_deep($event->event_name) ?></td>
+			<td id="venue_title-<?php echo $event->id?>" class="venue_title"><?php echo $event->venue_name ?></td>
+			<td id="start_date-<?php echo $event->id?>" class="start_date"><?php echo event_date_display($event->start_date, get_option('date_format')) ?> <?php echo espresso_event_time($event->id, 'start_time', get_option('time_format')) ?></td>
+			<td class="td-group"><?php echo event_espresso_get_status($event->id) == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?></td>
+		</tr>
+		<?php } //close foreach ?>
+	</tbody>
 </table>
 <script type="text/javascript">
 
