@@ -10,13 +10,14 @@ add_action('action_hook_espresso_custom_template_events-table','espresso_custom_
 function espresso_custom_template_events_table(){
 
 	global $this_event_id, $events, $wpdb;
-
+	
+	//Get the categories
 	$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;
 	$temp_cats = $wpdb->get_results($sql);
 
 ?>
 
-<label><?php echo __('Filter by category ', 'event_espresso'); ?></label>
+<p class="category-filter"><label><?php echo __('Filter by category ', 'event_espresso'); ?></label>
 <select class="" id="ee_filter_cat">
 	<option class="ee_filter_show_all"><?php echo __('Show All', 'event_espresso'); ?></option>
 	<?php
@@ -24,11 +25,11 @@ function espresso_custom_template_events_table(){
 			echo '<option class="cat-' . $cat->id . '">'. $cat->category_name . '</option>';
 		}
     ?>
-</select>
+</select></p>
 <table id="ee_filter_table" class="espresso-table" width="100%">
 	<thead class="espresso-table-header-row">
 		<tr>
-			<th class="th-group"><?php _e('Course','event_espresso'); ?></th>
+			<th class="th-group"><?php _e('Event','event_espresso'); ?></th>
 			<th class="th-group"><?php _e('Venue','event_espresso'); ?></th>
 			<th class="th-group"><?php _e('Date','event_espresso'); ?></th>
 			<th class="th-group"></th>
@@ -76,7 +77,7 @@ function espresso_custom_template_events_table(){
 			$live_button = __('Sold Out', 'event_espresso');
 			$cart_link = '';
 		} else if ($open_spots < 1 && $event->allow_overflow == 'Y'){
-			$live_button = '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List', 'event_espresso').'</a>';
+			$live_button = !empty($event->overflow_event_id) ? '<a href="'.espresso_reg_url($event->overflow_event_id).'">'.__('Join Waiting List', 'event_espresso').'</a>' : __('Sold Out', 'event_espresso');
 			$cart_link = '';
 		}
 		
@@ -119,4 +120,3 @@ jQuery(document).ready(function(){
 </script>
 <?php
 }
-
