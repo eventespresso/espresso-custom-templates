@@ -2,7 +2,7 @@
 /*
   Plugin Name: Event Espresso - Custom Template Display
   Plugin URI: http://www.eventespresso.com
-  Description: This addon for Event Espresso generates that queries for the template plugins.
+  Description: The Custom Template add-on is capable of displaying your event lists in a variety of exciting and interesting ways. 
   Version: 1.0
   Author: Event Espresso
   Author URI: http://www.eventespresso.com
