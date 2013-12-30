@@ -34,6 +34,25 @@ function espresso_custom_template_output($attributes){
 }
 add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 
+//Locate custom templates
+//Used by template plugins to check for custom templates 
+//Check within the current WP theme then uploads/espresso/templates/*template-name*/template.php
+function espresso_custom_template_locate($template_name){
+	if (has_action( 'action_hook_espresso_custom_template_'.$template_name )){
+		$path = locate_template( $template_name.'/template.php' );
+		if ( empty( $path ) ) {
+			if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/template.php')) {
+				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/template.php';
+			} else {
+				$path = '';
+			}
+		}
+		return $path;
+	} else {
+
+	}
+}
+
 add_action('action_hook_espresso_custom_template_output', 'espresso_custom_template_display', 10, 1 );
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
 function espresso_custom_template_display($attributes){
