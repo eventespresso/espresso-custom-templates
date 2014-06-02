@@ -73,7 +73,7 @@
 		}
 
 	   ?>
-		<tr class="espresso-table-row cat-<?php echo $event->category_id; ?>">
+		<tr class="espresso-table-row cat-<?php echo str_replace(',', ' cat-', $event->category_id); ?>">
 			<td id="event_title-<?php echo $event->id?>" class="event_title"><?php echo stripslashes_deep($event->event_name) ?></td>
 			<td id="venue_title-<?php echo $event->id?>" class="venue_title"><?php echo $event->venue_name ?></td>
 			<td id="start_date-<?php echo $event->id?>" class="start_date"><?php echo event_date_display($event->start_date/*.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')*/) ?></td>
