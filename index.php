@@ -86,6 +86,8 @@ function espresso_custom_template_display($attributes){
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
 			'user_id'					=> '',					//List events by user id
 			'template_name'				=> 'events-table',		//Default template
+			'template_identifier'		=> 'default',			//Template identifier used top pass a value so you can use multiples of the same template
+
 	);
 
 	// loop thru default atts
@@ -209,7 +211,7 @@ function espresso_custom_template_display($attributes){
 			}
 		}
 		if( !empty($path) ){
-			include_once( $path );
+			include( $path );
 		} else {
 			echo "The custom template {$template_name} can not be found";
 		}
