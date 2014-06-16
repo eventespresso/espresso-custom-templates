@@ -41,8 +41,11 @@ function espresso_custom_template_locate($template_name){
 	if (has_action( 'action_hook_espresso_custom_template_'.$template_name )){
 		$path = locate_template( $template_name.'/template.php' );
 		if ( empty( $path ) ) {
-			if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/template.php')) {
-				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name.'/template.php';
+			if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php')) {
+				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
+			} 
+			elseif (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php')) {
+				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
 			} else {
 				$path = '';
 			}
