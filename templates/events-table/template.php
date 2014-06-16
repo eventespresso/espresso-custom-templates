@@ -1,7 +1,7 @@
 <?php /* ---- Default events-table template ---- */ ?>
 
 <p class="category-filter"><label><?php echo __('Filter by category ', 'event_espresso'); ?></label>
-<select class="" id="ee_filter_cat">
+<select class="" id="ee_filter_cat_<?php echo $template_identifier; ?>">
 	<option class="ee_filter_show_all"><?php echo __('Show All', 'event_espresso'); ?></option>
 	<?php
 		foreach($temp_cats as $cat) {
@@ -9,7 +9,7 @@
 		}
     ?>
 </select></p>
-<table id="ee_filter_table" class="espresso-table" width="100%">
+<table id="ee_filter_table_<?php echo $template_identifier; ?>" class="espresso-table" width="100%">
 	<thead class="espresso-table-header-row">
 		<tr>
 			<th class="th-group"><?php _e('Event','event_espresso'); ?></th>
@@ -86,17 +86,17 @@
 
 jQuery(document).ready(function(){
 
-	jQuery("#ee_filter_cat").change(function() {
-		var ee_filter_cat_id = jQuery("#ee_filter_cat option:selected").attr('class');
+	jQuery("#ee_filter_cat_<?php echo $template_identifier; ?>").change(function() {
+		var ee_filter_cat_id = jQuery("#ee_filter_cat_<?php echo $template_identifier; ?> option:selected").attr('class');
 		console.log(ee_filter_cat_id);
-		jQuery("#ee_filter_table .espresso-table-row").show();
-		jQuery("#ee_filter_table .espresso-table-row").each(function() {
+		jQuery("#ee_filter_table_<?php echo $template_identifier; ?> .espresso-table-row").show();
+		jQuery("#ee_filter_table_<?php echo $template_identifier; ?> .espresso-table-row").each(function() {
 			if(!jQuery(this).hasClass(ee_filter_cat_id)) {
 				jQuery(this).hide();
 			}
 		});
 		if( ee_filter_cat_id == 'ee_filter_show_all') {
-			jQuery("#ee_filter_table .espresso-table-row").show();
+			jQuery("#ee_filter_table_<?php echo $template_identifier; ?> .espresso-table-row").show();
 		}
 	});
 
