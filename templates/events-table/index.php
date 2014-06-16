@@ -9,7 +9,9 @@ add_action('action_hook_espresso_custom_template_events-table','espresso_custom_
 
 function espresso_custom_template_events_table(){
 
-	global $this_event_id, $events, $wpdb;
+	global $this_event_id, $events, $wpdb, $ee_attributes;
+
+	extract($ee_attributes);
 	
 	//Get the categories
 	$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;
@@ -20,9 +22,9 @@ function espresso_custom_template_events_table(){
 	
 	if( !empty($custom_template_path) ){
 		//If custom template found include here
-		include_once( $custom_template_path );
+		include( $custom_template_path );
 	} else {
 		//Otherwise use the default template
-		include_once( 'template.php' );
+		include( 'template.php' );
 	}
 }
