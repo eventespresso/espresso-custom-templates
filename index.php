@@ -38,17 +38,20 @@ add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 //Used by template plugins to check for custom templates 
 //Check within the current WP theme then uploads/espresso/templates/*template-name*/template.php
 function espresso_custom_template_locate($template_name){
-	if (has_action( 'action_hook_espresso_custom_template_'.$template_name )){
-		$path = locate_template( $template_name.'/template.php' );
-		if ( empty( $path ) ) {
-			if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php')) {
-				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
-			} 
-			elseif (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php')) {
-				$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
-			} else {
-				$path = '';
-			}
+	if (has_action( 'action_hook_espresso_custom_template_'.$template_name )){		
+		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php')) {
+			//check for template using full directory name and return path
+			$path = EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php';
+		} 
+		elseif (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php')) {
+			//check for template using only the template name and return path
+			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
+		} elseif (locate_template(array('espresso-template-' . $template_name .'/template.php', $template_name.'/template.php'))) {
+			//check theme for custom template
+			$path = locate_template(array('espresso-template-' . $template_name .'/template.php', $template_name.'/template.php'));
+		} else {
+			//no template found.
+			$path = '';
 		}
 		return $path;
 	}
