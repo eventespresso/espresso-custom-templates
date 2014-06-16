@@ -51,8 +51,6 @@ function espresso_custom_template_locate($template_name){
 			}
 		}
 		return $path;
-	} else {
-
 	}
 }
 
