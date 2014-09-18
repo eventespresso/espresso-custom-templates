@@ -34,6 +34,29 @@ function espresso_custom_template_output($attributes){
 }
 add_shortcode('EVENT_CUSTOM_VIEW', 'espresso_custom_template_output');
 
+//Locate custom templates
+//Used by template plugins to check for custom templates 
+//Check within the current WP theme then uploads/espresso/templates/*template-name*/template.php
+function espresso_custom_template_locate($template_name){
+	if (has_action( 'action_hook_espresso_custom_template_'.$template_name )){		
+		if (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php')) {
+			//check for template using full directory name and return path
+			$path = EVENT_ESPRESSO_TEMPLATE_DIR . 'espresso-template-' . $template_name . '/template.php';
+		} 
+		elseif (file_exists(EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php')) {
+			//check for template using only the template name and return path
+			$path = EVENT_ESPRESSO_TEMPLATE_DIR . $template_name . '/template.php';
+		} elseif (locate_template(array('espresso-template-' . $template_name .'/template.php', $template_name.'/template.php'))) {
+			//check theme for custom template
+			$path = locate_template(array('espresso-template-' . $template_name .'/template.php', $template_name.'/template.php'));
+		} else {
+			//no template found.
+			$path = '';
+		}
+		return $path;
+	}
+}
+
 add_action('action_hook_espresso_custom_template_output', 'espresso_custom_template_display', 10, 1 );
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
 function espresso_custom_template_display($attributes){
@@ -67,6 +90,8 @@ function espresso_custom_template_display($attributes){
 			'sort'						=> '',					//Sort direction. Example ASC or DESC. Default is ASC
 			'user_id'					=> '',					//List events by user id
 			'template_name'				=> 'events-table',		//Default template
+			'template_identifier'		=> 'default',			//Template identifier used top pass a value so you can use multiples of the same template
+
 	);
 
 	// loop thru default atts
@@ -190,7 +215,7 @@ function espresso_custom_template_display($attributes){
 			}
 		}
 		if( !empty($path) ){
-			include_once( $path );
+			include( $path );
 		} else {
 			echo "The custom template {$template_name} can not be found";
 		}
@@ -218,8 +243,8 @@ function espresso_custom_templates_load_pue_update() {
 		$api_key = $org_options['site_license_key'];
 		$host_server_url = 'http://eventespresso.com';
 		$plugin_slug = array(
-			'premium' => array('p'=> 'espresso-custom-templates'),
-			'prerelease' => array('b'=> 'espresso-custom-templates-pr')
+			'premium' => array('p'=> 'custom-templates'),
+			'prerelease' => array('b'=> 'custom-templates-pr')
 			);
 		$options = array(
 			'apikey' => $api_key,
