@@ -5,7 +5,7 @@
 	<option class="ee_filter_show_all"><?php echo __('Show All', 'event_espresso'); ?></option>
 	<?php
 		foreach($temp_cats as $cat) {
-			echo '<option class="cat-' . $cat->id . '">'. $cat->category_name . '</option>';
+			echo '<option class="cat-' . $cat->id . '">'. stripslashes($cat->category_name) . '</option>';
 		}
     ?>
 </select></p>
@@ -75,7 +75,7 @@
 	   ?>
 		<tr class="espresso-table-row cat-<?php echo str_replace(',', ' cat-', $event->category_id); ?>">
 			<td class="event_title event-<?php echo $event->id;?>"><?php echo stripslashes_deep($event->event_name) ?></td>
-			<td class="venue_title venue-<?php echo $event->id;?>"><?php echo $event->venue_name ?></td>
+			<td class="venue_title venue-<?php echo $event->id;?>"><?php echo stripslashes($event->venue_name) ?></td>
 			<td class="start_date start_date-<?php echo $event->id;?>"><?php echo event_date_display($event->start_date/*.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')*/) ?></td>
 			<td class="td-group reg-col" nowrap="nowrap"><?php echo $event_status == 'ACTIVE' ? $live_button .  $cart_link : $live_button; ?></td>
 		</tr>
