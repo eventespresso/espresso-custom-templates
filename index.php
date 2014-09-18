@@ -243,8 +243,8 @@ function espresso_custom_templates_load_pue_update() {
 		$api_key = $org_options['site_license_key'];
 		$host_server_url = 'http://eventespresso.com';
 		$plugin_slug = array(
-			'premium' => array('p'=> 'espresso-custom-templates'),
-			'prerelease' => array('b'=> 'espresso-custom-templates-pr')
+			'premium' => array('p'=> 'custom-templates'),
+			'prerelease' => array('b'=> 'custom-templates-pr')
 			);
 		$options = array(
 			'apikey' => $api_key,
