@@ -59,7 +59,7 @@ function espresso_custom_template_locate($template_name){
 
 add_action('action_hook_espresso_custom_template_output', 'espresso_custom_template_display', 10, 1 );
 //HTML to show the events on your page in matching table. To customize this layout, please copy and paste the following code into your theme/functions.php file.
-function espresso_custom_template_display($attributes){
+function espresso_custom_template_display($attributes) {
 
 	if( !defined('ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH')){
 		define("ESPRESSO_CUSTOM_DISPLAY_PLUGINPATH", WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) . "/");
@@ -94,12 +94,13 @@ function espresso_custom_template_display($attributes){
 
 	);
 
-	// loop thru default atts
-	foreach ($default_attributes as $key => $default_attribute) {
-		// check if att exists
-		if (!isset($attributes[$key])) {
-				$attributes[$key] = $default_attribute;
-		}
+	if(!is_array($attributes)) {
+		$attributes = $default_attributes;
+	} else {
+		$attributes = array_merge(
+			$default_attributes,
+			$attributes
+		);
 	}
 
 	//Create a global to hold the shortcode attributes/parameters
