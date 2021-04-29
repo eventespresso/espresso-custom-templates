@@ -175,7 +175,7 @@ function espresso_custom_template_display($attributes) {
 	$sql	.= "WHERE e.is_active = 'Y' ";
 
 	//Check shortcodes attributes
-	$sql	.= $show_expired 		== 'false' ? " AND (e.start_date >= '" . date('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . date('Y-m-d') . "') " : '';
+	$sql	.= $show_expired 		== 'false' ? " AND (e.start_date >= '" . current_time('Y-m-d') . "' OR e.event_status = 'O' OR e.registration_end >= '" . current_time('Y-m-d') . "') " : '';
 	$sql	.= $show_deleted 		== 'false' ? " AND e.event_status != 'D' " : "";
 	$sql	.= $show_secondary		== 'false' ? " AND e.event_status != 'S' " : '';
 	$sql	.= $show_recurrence		== 'false' ? " AND e.recurrence_id = '0' " : '';
